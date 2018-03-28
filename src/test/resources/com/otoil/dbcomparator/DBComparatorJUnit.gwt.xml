@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to="DBComparator">
+  <!-- Inherit our applications main module.                      -->
+  <inherits name='com.otoil.dbcomparator.DBComparator' />
+
+  <!-- Specify the path to any remote services.                   -->
+  <servlet path="/DBComparator/greet" class="com.otoil.dbcomparator.server.GreetingServiceImpl" />
+
+</module>
