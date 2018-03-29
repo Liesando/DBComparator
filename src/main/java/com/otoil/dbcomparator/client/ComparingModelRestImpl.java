@@ -12,7 +12,7 @@ import com.otoil.dbcomparator.shared.DatabaseNode;
  * @author kakeru
  *
  */
-public class RestComparingModel implements ComparingModel
+public class ComparingModelRestImpl implements ComparingModel
 {
 
     @Override

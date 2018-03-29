@@ -18,14 +18,14 @@ import com.otoil.dbcomparator.client.interfaces.DBSourcesView;
  * @author kakeru
  *
  */
-public class ZipSnapshotsView implements DBSourcesView
+public class DBSourcesViewZipSnapshotsImpl implements DBSourcesView
 {
     private final FormPanel form = new FormPanel();
     private final FileUpload source = new FileUpload();
     private final FileUpload destination = new FileUpload();
     private final Button compareBtn = new Button();
 
-    public ZipSnapshotsView()
+    public DBSourcesViewZipSnapshotsImpl()
     {
         compareBtn.setText("Compare");
         compareBtn.addClickHandler(event -> {

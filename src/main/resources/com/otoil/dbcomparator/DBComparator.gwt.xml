@@ -19,7 +19,7 @@
 
   <!-- Other module inherits                                     -->
   <inherits name="com.google.gwt.activity.Activity"/>
-<!--   <inherits name="org.fusesource.restygwt.RestyGWT"/>  -->
+  <inherits name="org.fusesource.restygwt.RestyGWT"/> 
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.otoil.dbcomparator.client.DBComparator'/>

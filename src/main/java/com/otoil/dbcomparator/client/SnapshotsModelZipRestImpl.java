@@ -14,7 +14,7 @@ import com.otoil.dbcomparator.shared.TableNode;
  * @author kakeru
  *
  */
-public class ZipRestModel implements SnapshotsModel
+public class SnapshotsModelZipRestImpl implements SnapshotsModel
 {
 
     @Override

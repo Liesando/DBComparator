@@ -17,14 +17,14 @@ public class DBComparator implements EntryPoint
     @Override
     public void onModuleLoad()
     {
-        ClientFactory clientFactory = new DesktopSnapshotsClientFactory();
+        ClientFactory clientFactory = new ClientFactoryDesktopSnapshotsImpl();
         SnapshotsPresenter snapshotsPresenter = new SnapshotsPresenter(
             clientFactory.getDBSourcesView(),
             clientFactory.getSnapshotsModel(),
             clientFactory.getNameGenerator());
         
         ResultPresenter resultPresenter = new ResultPresenter(
-            new DesktopResultView(), new RestComparingModel());
+            new ResultViewDesktopImpl(), new ComparingModelRestImpl());
         
         // вообще говоря, может быть, нужно было использовать всякие
         // ActivityManager'ы, историю и т. д.

@@ -8,6 +8,11 @@ package com.otoil.dbcomparator.shared;
  */
 public class TableNode extends AbstractNode
 {
+    public TableNode()
+    {
+        this(null);
+    }
+    
     public TableNode(String name)
     {
         super(name);

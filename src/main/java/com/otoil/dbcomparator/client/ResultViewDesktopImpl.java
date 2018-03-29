@@ -18,16 +18,16 @@ import com.otoil.dbcomparator.shared.DatabaseNode;
  * 
  * @author kakeru
  */
-public class DesktopResultView implements ResultView
+public class ResultViewDesktopImpl implements ResultView
 {
     private static final double TREE_SIZE = 256.0;
     private SplitLayoutPanel splitPanel = new SplitLayoutPanel();
-    private CustomTreeModel sourceModel = new CustomTreeModel();
-    private CustomTreeModel destModel = new CustomTreeModel();
+    private CustomCellTreeModel sourceModel = new CustomCellTreeModel();
+    private CustomCellTreeModel destModel = new CustomCellTreeModel();
     private CellTree sourceTree = null;
     private CellTree destTree = null;
 
-    public DesktopResultView()
+    public ResultViewDesktopImpl()
     {
         splitPanel.setHeight("100%");
     }

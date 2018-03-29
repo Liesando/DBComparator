@@ -24,11 +24,11 @@ import com.otoil.dbcomparator.shared.TableNode;
  *      <code><i>new CellTree(model, ...)</i></code>
  * @author Sergey Medelyan
  */
-public class CustomTreeModel implements TreeViewModel
+public class CustomCellTreeModel implements TreeViewModel
 {
     private DatabaseNode root;
 
-    public CustomTreeModel()
+    public CustomCellTreeModel()
     {
     }
 

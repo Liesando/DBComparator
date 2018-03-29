@@ -4,6 +4,10 @@ package com.otoil.dbcomparator.shared;
 import java.util.ArrayList;
 import java.util.function.Function;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
 
 /**
  * Узел, представляющий собой некоторый элемент базы в слепке
@@ -19,6 +23,7 @@ import java.util.function.Function;
  * @author kakeru
  *
  */
+@JsonTypeInfo(use=Id.CLASS, include=As.PROPERTY, property="@class")
 public abstract class AbstractNode
 {
     /**

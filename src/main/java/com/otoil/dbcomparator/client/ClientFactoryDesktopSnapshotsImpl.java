@@ -18,14 +18,14 @@ import com.otoil.dbcomparator.client.interfaces.UniqueNameGenerator;
  * @author kakeru
  *
  */
-public class DesktopSnapshotsClientFactory implements ClientFactory
+public class ClientFactoryDesktopSnapshotsImpl implements ClientFactory
 {
     private final EventBus eventBus = new SimpleEventBus();
-    private final DBSourcesView view = new ZipSnapshotsView();
-    private final UniqueNameGenerator generator = new MockNameGenerator();
-    private final SnapshotsModel model = new ZipRestModel();
+    private final DBSourcesView view = new DBSourcesViewZipSnapshotsImpl();
+    private final UniqueNameGenerator generator = new UniqueNameGeneratorMockImpl();
+    private final SnapshotsModel model = new SnapshotsModelZipRestImpl();
     
-    public DesktopSnapshotsClientFactory() {}
+    public ClientFactoryDesktopSnapshotsImpl() {}
     
     @Override
     public EventBus getEventBus()
