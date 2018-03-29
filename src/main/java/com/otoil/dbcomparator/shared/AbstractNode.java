@@ -7,6 +7,7 @@ import java.util.function.Function;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.otoil.dbcomparator.shared.AbstractNode.NodeState;
 
 
 /**
@@ -38,12 +39,20 @@ public abstract class AbstractNode
 
     private NodeState state;
     private final String name;
-    private final ArrayList<AbstractNode> children = new ArrayList<AbstractNode>();
+    private final ArrayList<AbstractNode> children;
 
     protected AbstractNode(String name)
     {
         this.name = name;
         state = NodeState.NON_CHANGED;
+        children = new ArrayList<AbstractNode>();
+    }
+    
+    protected AbstractNode(NodeState state, String name, ArrayList<AbstractNode> children)
+    {
+        this.state = state;
+        this.name = name;
+        this.children = children;
     }
 
     public final void addChild(AbstractNode child)
