@@ -20,11 +20,27 @@
 		<servlet-name>uploadServlet</servlet-name>
 		<servlet-class>com.otoil.dbcomparator.server.FileUploadServlet</servlet-class>
 	</servlet>
-
+	
+	<servlet>
+		<servlet-name>jersey-rest</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>jersey.config.server.provider.packages</param-name>
+			<param-value>com.otoil.dbcomparator.server</param-value>
+		</init-param>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>jersey-rest</servlet-name>
+		<url-pattern>/dbcomparator/rest/*</url-pattern>
+	</servlet-mapping>
+	
 	<servlet-mapping>
 		<servlet-name>uploadServlet</servlet-name>
 		<url-pattern>/dbcomparator/upload</url-pattern>
 	</servlet-mapping>
+	
+	
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
