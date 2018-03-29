@@ -1,6 +1,9 @@
 package com.otoil.dbcomparator.client;
 
 
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
+
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -45,37 +48,40 @@ public class SnapshotsPresenter extends AbstractActivity
         // зарегать хендлер для сабмита
         submitHandlerReg = view.addSubmitCompleteHandler(submitEvent -> {
             model.parseSnapshot(view.source().getName(),
-                new AsyncCallback<DatabaseNode>()
+                new MethodCallback<DatabaseNode>()
                 {
+
                     @Override
-                    public void onSuccess(DatabaseNode result)
+                    public void onFailure(Method method, Throwable exception)
                     {
-                        source = result;
-                        fireEvent(eventBus);
+                        throw new RuntimeException(exception);
                     }
 
                     @Override
-                    public void onFailure(Throwable caught)
+                    public void onSuccess(Method method, DatabaseNode response)
                     {
-                        // TODO: обработать ошибку
+                        source = response;
+                        fireEvent(eventBus);
+
                     }
                 });
 
             model.parseSnapshot(view.destination().getName(),
-                new AsyncCallback<DatabaseNode>()
+                new MethodCallback<DatabaseNode>()
                 {
 
                     @Override
-                    public void onSuccess(DatabaseNode result)
+                    public void onFailure(Method method, Throwable exception)
                     {
-                        destination = result;
-                        fireEvent(eventBus);
+                        throw new RuntimeException(exception);
                     }
 
                     @Override
-                    public void onFailure(Throwable caught)
+                    public void onSuccess(Method method, DatabaseNode response)
                     {
-                        // TODO: обработать ошибку
+                        destination = response;
+                        fireEvent(eventBus);
+
                     }
                 });
         });
