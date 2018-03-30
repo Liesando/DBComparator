@@ -1,24 +1,18 @@
 package com.otoil.dbcomparator.server;
 
 
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
+import com.otoil.dbcomparator.client.interfaces.SnapshotParserService;
 import com.otoil.dbcomparator.shared.ColumnNode;
 import com.otoil.dbcomparator.shared.DatabaseNode;
 import com.otoil.dbcomparator.shared.TableNode;
 
 
 @Path("snapshot-parser")
-public class SnapshotParser
+public class SnapshotParser implements SnapshotParserService
 {
-    @Path("/{id}")
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public DatabaseNode parseSnapshot(@PathParam("id") String snapshotId)
+    public DatabaseNode parseSnapshot(String snapshotId)
     {
         // mock
         DatabaseNode root = null;
@@ -43,7 +37,7 @@ public class SnapshotParser
             table1.addChild(new ColumnNode("Col 1"));
             table1.addChild(new ColumnNode("Col 2"));
             table2.addChild(new ColumnNode("##Col 1"));
-            table2.addChild(new ColumnNode("##Col 2")); 
+            table2.addChild(new ColumnNode("##Col 2"));
         }
 
         return root;

@@ -22,10 +22,10 @@ public class ResultViewDesktopImpl implements ResultView
 {
     private static final double TREE_SIZE = 256.0;
     private SplitLayoutPanel splitPanel = new SplitLayoutPanel();
-    private CustomCellTreeModel sourceModel = new CustomCellTreeModel();
-    private CustomCellTreeModel destModel = new CustomCellTreeModel();
-    private CellTree sourceTree = null;
-    private CellTree destTree = null;
+    private CustomCellTreeModel sourceCellTreeModel = new CustomCellTreeModel();
+    private CustomCellTreeModel destCellTreeModel = new CustomCellTreeModel();
+    private CellTree sourceCellTree = null;
+    private CellTree destCellTree = null;
 
     public ResultViewDesktopImpl()
     {
@@ -38,16 +38,16 @@ public class ResultViewDesktopImpl implements ResultView
         // удаляем предыдущие деревья, если таковые были,
         // чтобы не попасть в ситуацию с кучей копий
         // одного и того же CellTree
-        if (sourceTree != null)
+        if (sourceCellTree != null)
         {
-            splitPanel.remove(sourceTree);
+            splitPanel.remove(sourceCellTree);
         }
 
-        sourceModel.setRoot(root);
-        sourceTree = new CellTree(sourceModel, null);
-        openRecursevily(sourceTree);
+        sourceCellTreeModel.setRoot(root);
+        sourceCellTree = new CellTree(sourceCellTreeModel, null);
+        openRecursevily(sourceCellTree);
 
-        splitPanel.addWest(sourceTree, TREE_SIZE);
+        splitPanel.addWest(sourceCellTree, TREE_SIZE);
     }
 
     @Override
@@ -56,16 +56,16 @@ public class ResultViewDesktopImpl implements ResultView
         // удаляем предыдущие деревья, если таковые были,
         // чтобы не попасть в ситуацию с кучей копий
         // одного и того же CellTree
-        if (destTree != null)
+        if (destCellTree != null)
         {
-            splitPanel.remove(destTree);
+            splitPanel.remove(destCellTree);
         }
 
-        destModel.setRoot(root);
-        destTree = new CellTree(destModel, null);
-        openRecursevily(destTree);
+        destCellTreeModel.setRoot(root);
+        destCellTree = new CellTree(destCellTreeModel, null);
+        openRecursevily(destCellTree);
         
-        splitPanel.addEast(destTree, TREE_SIZE);
+        splitPanel.addEast(destCellTree, TREE_SIZE);
     }
 
     /**

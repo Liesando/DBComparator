@@ -2,8 +2,11 @@ package com.otoil.dbcomparator.shared;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
@@ -11,35 +14,34 @@ import com.otoil.dbcomparator.shared.AbstractNode.NodeState;
 
 
 /**
- * Узел, представляющий собой некоторый элемент базы в слепке
- * (например, саму базу, таблицу, столбец, вьюху и т. д.). Может
- * содержать в себе другие узлы.
- * 
- * TODO: добавить updateParentState() и, соответственно parent,
- * если потребуется (упростит парсинг, т. к. не нужно будет следить,
- * изменилось ли что-нибудь в таблице, чтобы изменить её статус; 
- * в случае с этими методом и полем - они сами позаботятся об
- * обновлении статуса своего родителя)
+ * Узел, представляющий собой некоторый элемент базы в слепке (например, саму
+ * базу, таблицу, столбец, вьюху и т. д.). Может содержать в себе другие узлы.
+ * TODO: добавить updateParentState() и, соответственно parent, если потребуется
+ * (упростит парсинг, т. к. не нужно будет следить, изменилось ли что-нибудь в
+ * таблице, чтобы изменить её статус; в случае с этими методом и полем - они
+ * сами позаботятся об обновлении статуса своего родителя)
  * 
  * @author kakeru
- *
  */
-@JsonTypeInfo(use=Id.CLASS, include=As.PROPERTY, property="@class")
+@JsonSubTypes({@Type(value = DatabaseNode.class, name = "database"),
+    @Type(value = TableNode.class, name = "table"),
+    @Type(value = ColumnNode.class, name = "column")})
+@JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "@class")
 public abstract class AbstractNode
 {
     /**
      * Состояние узла (изменяется моделью, проводящей сравнение слепков)
+     * 
      * @author kakeru
-     *
      */
     public enum NodeState
-    { 
+    {
         NON_CHANGED, CHANGED, DELETED, ADDED
     }
 
     private NodeState state;
-    private final String name;
-    private final ArrayList<AbstractNode> children;
+    private String name;
+    private List<AbstractNode> children;
 
     protected AbstractNode(String name)
     {
@@ -47,8 +49,9 @@ public abstract class AbstractNode
         state = NodeState.NON_CHANGED;
         children = new ArrayList<AbstractNode>();
     }
-    
-    protected AbstractNode(NodeState state, String name, ArrayList<AbstractNode> children)
+
+    protected AbstractNode(NodeState state, String name,
+        List<AbstractNode> children)
     {
         this.state = state;
         this.name = name;
@@ -60,10 +63,10 @@ public abstract class AbstractNode
         if (canContainChild(child))
         {
             children.add(child);
-            
+
             // если у нас состояние added/deleted, сразу меняем состояние
             // ребёнка
-            if(state == NodeState.ADDED || state == NodeState.DELETED)
+            if (state == NodeState.ADDED || state == NodeState.DELETED)
             {
                 child.setState(state);
             }
@@ -75,21 +78,20 @@ public abstract class AbstractNode
         return name;
     }
 
-    public final ArrayList<AbstractNode> getChildren()
+    public final List<AbstractNode> getChildren()
     {
         return children;
     }
 
     /**
-     * Возвращает детей данного узла определённого типа.
-     * (см. закомментированную версию функции ниже, если возникают вопросы, 
-     * зачем так сложно).
+     * Возвращает детей данного узла определённого типа. (см. закомментированную
+     * версию функции ниже, если возникают вопросы, зачем так сложно).
      * 
      * @param instanceChecker функция, проверяющая, нужный ли тип у узла
      * @param caster функция, преобразующая узел к нужному типу
      * @return списочный массив из узлов нужного типа
      */
-    public final <T extends AbstractNode> ArrayList<T> getChildrenOfType(
+    public final <T extends AbstractNode> List<T> getChildrenOfType(
         Function<AbstractNode, Boolean> instanceChecker,
         Function<AbstractNode, T> caster)
     {
@@ -111,19 +113,6 @@ public abstract class AbstractNode
         return result;
     }
 
-    // gwt не может это перевести в js, так что пользуем конструкцию подлиннее
-    // (функция выше)
-    // public final <T extends AbstractNode> ArrayList<T> getChildrenOfType(Class<T> type)
-    // {
-    // ArrayList<T> result = new ArrayList<T>();
-    // children.forEach(abstractNode -> {
-    // if(type.isInstance(abstractNode))
-    // result.add(type.cast(abstractNode));
-    // });
-    //
-    // return result;
-    // }
-
     public final NodeState getState()
     {
         return state;
@@ -135,7 +124,9 @@ public abstract class AbstractNode
 
         // элементы со статусом "удалён" или "добавлен"
         // всем своим детям задают такой же статус
-        if (state == NodeState.DELETED || state == NodeState.ADDED)
+        if (children != null &&
+                (state == NodeState.DELETED 
+                || state == NodeState.ADDED))
         {
             for (int i = 0; i < children.size(); i++)
             {
@@ -144,8 +135,20 @@ public abstract class AbstractNode
         }
     }
 
+
+    public void setChildren(List<AbstractNode> children)
+    {
+        this.children = children;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+    
     /**
      * Может ли данный узел содержать указанного ребёнка?
+     * 
      * @param child
      * @return
      */

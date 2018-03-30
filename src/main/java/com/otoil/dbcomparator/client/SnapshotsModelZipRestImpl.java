@@ -2,6 +2,7 @@ package com.otoil.dbcomparator.client;
 
 
 import org.fusesource.restygwt.client.MethodCallback;
+import org.fusesource.restygwt.client.REST;
 
 import com.google.gwt.core.client.GWT;
 import com.otoil.dbcomparator.client.interfaces.SnapshotParserService;
@@ -19,17 +20,17 @@ import com.otoil.dbcomparator.shared.TableNode;
  */
 public class SnapshotsModelZipRestImpl implements SnapshotsModel
 {
-    private SnapshotParserService snapshotParser;
+    private SnapshotParserService snapshotParserService;
     
     public SnapshotsModelZipRestImpl()
     {
-        snapshotParser = GWT.create(SnapshotParserService.class);
+        snapshotParserService = GWT.create(SnapshotParserService.class);
     }
     
     @Override
-    public void parseSnapshot(String id, MethodCallback<DatabaseNode> callback)
+    public void parseSnapshot(String snapshotId, MethodCallback<DatabaseNode> callback)
     {
-        snapshotParser.parseSnapshot(id, callback);
+        REST.withCallback(callback).call(snapshotParserService).parseSnapshot(snapshotId);
     }
 
 }

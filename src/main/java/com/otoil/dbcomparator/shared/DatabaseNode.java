@@ -25,21 +25,6 @@ public class DatabaseNode extends AbstractNode
         super(name);
     }
 
-    @JsonCreator
-    public DatabaseNode(@JsonProperty("state") NodeState state,
-        @JsonProperty("name") String name,
-        @JsonProperty("children") ArrayList<AbstractNode> children)
-    {
-        super(state, name, children);
-    }
-    
-//    public DatabaseNode(NodeState state,
-//        String name,
-//        ArrayList<AbstractNode> children)
-//    {
-//        super(state, name, children);
-//    }
-
     @Override
     protected boolean canContainChild(AbstractNode child)
     {
