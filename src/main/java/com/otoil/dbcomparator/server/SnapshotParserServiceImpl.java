@@ -10,7 +10,7 @@ import com.otoil.dbcomparator.shared.TableNode;
 
 
 @Path("snapshot-parser")
-public class SnapshotParser implements SnapshotParserService
+public class SnapshotParserServiceImpl implements SnapshotParserService
 {
     public DatabaseNode parseSnapshot(String snapshotId)
     {

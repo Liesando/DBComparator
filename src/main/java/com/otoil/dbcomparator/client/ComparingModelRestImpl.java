@@ -1,33 +1,38 @@
 package com.otoil.dbcomparator.client;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import org.fusesource.restygwt.client.MethodCallback;
+import org.fusesource.restygwt.client.REST;
+
+import com.google.gwt.core.client.GWT;
 import com.otoil.dbcomparator.client.interfaces.ComparingModel;
+import com.otoil.dbcomparator.client.interfaces.SnapshotComparatorService;
 import com.otoil.dbcomparator.shared.AbstractNode.NodeState;
+import com.otoil.dbcomparator.shared.ComparisonRequest;
 import com.otoil.dbcomparator.shared.ComparisonResult;
 import com.otoil.dbcomparator.shared.DatabaseNode;
 
 
 /**
  * Модель, сравнивающая слепки с использованием REST-сервиса (сервера?)
+ * 
  * @author kakeru
- *
  */
 public class ComparingModelRestImpl implements ComparingModel
 {
+    private SnapshotComparatorService service;
+
+    public ComparingModelRestImpl()
+    {
+        service = GWT.create(SnapshotComparatorService.class);
+    }
 
     @Override
     public void compare(DatabaseNode sourceRoot, DatabaseNode destRoot,
-        AsyncCallback<ComparisonResult> callback)
+        MethodCallback<ComparisonResult> callback)
     {
-        // mocking
-        sourceRoot.getChildren().get(0).setState(NodeState.CHANGED);
-        sourceRoot.getChildren().get(1).setState(NodeState.DELETED);
-        destRoot.getChildren().get(0).setState(NodeState.ADDED);
-        destRoot.getChildren().get(1).setState(NodeState.CHANGED);
-        destRoot.getChildren().get(1).getChildren().get(0).setState(NodeState.CHANGED);
-        destRoot.getChildren().get(1).getChildren().get(1).setState(NodeState.CHANGED);
-        ComparisonResult result = new ComparisonResult(sourceRoot, destRoot);
-        callback.onSuccess(result);
+        REST.withCallback(callback).call(service)
+            .compareSnapshot(new ComparisonRequest(sourceRoot, destRoot));
     }
-    
+
 }

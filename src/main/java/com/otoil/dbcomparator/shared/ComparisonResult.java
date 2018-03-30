@@ -1,9 +1,11 @@
 package com.otoil.dbcomparator.shared;
 
-public class ComparisonResult
+public final class ComparisonResult
 {
-    private final DatabaseNode sourceRoot;
-    private final DatabaseNode destRoot;
+    private DatabaseNode sourceRoot;
+    private DatabaseNode destRoot;
+    
+    public ComparisonResult() {}
     
     public ComparisonResult(DatabaseNode sourceRoot, DatabaseNode destRoot)
     {
@@ -21,6 +23,14 @@ public class ComparisonResult
     {
         return destRoot;
     }
-    
-    
+
+    public void setSourceRoot(DatabaseNode sourceRoot)
+    {
+        this.sourceRoot = sourceRoot;
+    }
+
+    public void setDestRoot(DatabaseNode destRoot)
+    {
+        this.destRoot = destRoot;
+    }
 }

@@ -1,5 +1,7 @@
 package com.otoil.dbcomparator.client.interfaces;
 
+import org.fusesource.restygwt.client.MethodCallback;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.otoil.dbcomparator.shared.ComparisonResult;
 import com.otoil.dbcomparator.shared.DatabaseNode;
@@ -13,5 +15,5 @@ import com.otoil.dbcomparator.shared.DatabaseNode;
 public interface ComparingModel
 {
     void compare(DatabaseNode sourceRoot, DatabaseNode destRoot,
-        AsyncCallback<ComparisonResult> callback);
+        MethodCallback<ComparisonResult> callback);
 }

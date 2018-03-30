@@ -1,6 +1,9 @@
 package com.otoil.dbcomparator.client;
 
 
+import org.fusesource.restygwt.client.Method;
+import org.fusesource.restygwt.client.MethodCallback;
+
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -12,8 +15,8 @@ import com.otoil.dbcomparator.shared.ComparisonResult;
 
 /**
  * Презентер для результатов сравнения
+ * 
  * @author kakeru
- *
  */
 public class ResultPresenter extends AbstractActivity
 {
@@ -38,24 +41,28 @@ public class ResultPresenter extends AbstractActivity
                 public void onSnapshotsUploaded(SnapshotsUploadedEvent event)
                 {
                     model.compare(event.getSource(), event.getDestination(),
-                        new AsyncCallback<ComparisonResult>()
+                        new MethodCallback<ComparisonResult>()
                         {
+
                             @Override
-                            public void onFailure(Throwable caught)
+                            public void onSuccess(Method method,
+                                ComparisonResult response)
                             {
-                                // TODO: обработать ошибку
+                                view.setSourceDBRoot(response.getSourceRoot());
+                                view.setDestinationDBRoot(response.getDestRoot());
                             }
 
                             @Override
-                            public void onSuccess(ComparisonResult result)
+                            public void onFailure(Method method,
+                                Throwable exception)
                             {
-                                view.setSourceDBRoot(result.getSourceRoot());
-                                view.setDestinationDBRoot(result.getDestRoot());
+                                // TODO Auto-generated method stub
+
                             }
                         });
                 }
             });
-        
+
         panel.setWidget(view);
     }
 
