@@ -12,7 +12,7 @@ import com.otoil.dbcomparator.client.interfaces.UniqueNameGenerator;
  */
 public class UniqueNameGeneratorMockImpl implements UniqueNameGenerator
 {
-    private static int last = 0;
+    private static int last = 100;
     
     @Override
     public String generateUniqueName()
