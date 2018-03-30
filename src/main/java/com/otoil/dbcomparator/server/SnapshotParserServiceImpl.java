@@ -1,9 +1,21 @@
 package com.otoil.dbcomparator.server;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
+
 import javax.ws.rs.Path;
 
 import com.otoil.dbcomparator.client.interfaces.SnapshotParserService;
+import com.otoil.dbcomparator.server.exceptions.ZipIsEmptyException;
+import com.otoil.dbcomparator.server.snapshotparsing.DBObjectParsingException;
+import com.otoil.dbcomparator.server.snapshotparsing.DBZipEntryParser;
 import com.otoil.dbcomparator.shared.ColumnNode;
 import com.otoil.dbcomparator.shared.DatabaseNode;
 import com.otoil.dbcomparator.shared.TableNode;
@@ -14,6 +26,62 @@ public class SnapshotParserServiceImpl implements SnapshotParserService
 {
     public DatabaseNode parseSnapshot(String snapshotId)
     {
+
+        System.out.println("started with: " + snapshotId);
+        // some tests with zip
+        try
+        {
+            File file = new File(System.getProperty("java.io.tmpdir"),
+                snapshotId + ".zip");
+            ZipFile zf = new ZipFile(file);
+            Enumeration<? extends ZipEntry> entries = zf.entries();
+            DatabaseNode db = null;
+            DBZipEntryParser entryParser = new DBZipEntryParser();
+
+            while(entries.hasMoreElements())
+            {
+                ZipEntry entry = entries.nextElement();
+                if(db == null)
+                {
+                    db = getDatabaseNode(entry);
+                }
+                else
+                {
+                    entryParser.parse(db, zf.getInputStream(entry), () -> {
+                        
+                        try
+                        {
+                            return DBZipEntryParser.defaultZipEntryChildrenExtractor(zf.getInputStream(entry));
+                        }
+                        catch (DBObjectParsingException | IOException e)
+                        {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                            return null;
+                        }
+                    });
+                }
+            }
+            
+            System.out.println("!!!!ok!!!!\n");
+        }
+        catch (ZipIsEmptyException e)
+        {
+            e.printStackTrace();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch(DBObjectParsingException e)
+        {
+            e.printStackTrace();
+        }
+
         // mock
         DatabaseNode root = null;
         if (snapshotId.equals("1"))
@@ -41,5 +109,21 @@ public class SnapshotParserServiceImpl implements SnapshotParserService
         }
 
         return root;
+    }
+
+    private DatabaseNode getDatabaseNode(ZipEntry firstEntry)
+        throws ZipIsEmptyException
+    {
+        if (firstEntry == null)
+        {
+            throw new ZipIsEmptyException();
+        }
+
+        String dbName = firstEntry.getName().endsWith("/")
+            ? firstEntry.getName().substring(0,
+                firstEntry.getName().length() - 1)
+            : "(not specified)";
+
+        return new DatabaseNode(dbName);
     }
 }
