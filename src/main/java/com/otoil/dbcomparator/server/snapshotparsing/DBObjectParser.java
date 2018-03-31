@@ -53,16 +53,7 @@ public abstract class DBObjectParser<T, R extends AbstractNode>
             NodeList children = childrenExtractor.get();
             if (children != null)
             {
-                for (int i = 0; i < children.getLength(); i++)
-                {
-                    Node temp = children.item(i);
-                    if (temp.getNodeType() == Node.ELEMENT_NODE
-                        && subparsers.containsKey(temp.getNodeName()))
-                    {
-                        subparsers.get(temp.getNodeName()).parse(result, temp,
-                            temp::getChildNodes);
-                    }
-                }
+                parseChildren(result, children);
             }
         }
 
@@ -70,6 +61,21 @@ public abstract class DBObjectParser<T, R extends AbstractNode>
         if (result != null)
         {
             parent.addChild(result);
+        }
+    }
+
+    protected void parseChildren(R parentDBNode, NodeList children)
+        throws DBObjectParsingException
+    {
+        for (int i = 0; i < children.getLength(); i++)
+        {
+            Node temp = children.item(i);
+            if (temp.getNodeType() == Node.ELEMENT_NODE
+                && subparsers.containsKey(temp.getNodeName()))
+            {
+                subparsers.get(temp.getNodeName()).parse(parentDBNode, temp,
+                    temp::getChildNodes);
+            }
         }
     }
 
