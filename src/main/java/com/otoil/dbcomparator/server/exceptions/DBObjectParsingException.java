@@ -1,4 +1,4 @@
-package com.otoil.dbcomparator.server.snapshotparsing;
+package com.otoil.dbcomparator.server.exceptions;
 
 
 public class DBObjectParsingException extends Exception

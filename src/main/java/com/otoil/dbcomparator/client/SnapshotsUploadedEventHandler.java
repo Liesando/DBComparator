@@ -7,6 +7,7 @@ import com.google.gwt.event.shared.EventHandler;
  * @author kakeru
  *
  */
+@FunctionalInterface
 public interface SnapshotsUploadedEventHandler extends EventHandler
 {
     void onSnapshotsUploaded(SnapshotsUploadedEvent event);

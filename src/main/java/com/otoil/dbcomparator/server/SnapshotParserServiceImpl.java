@@ -7,14 +7,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
 import javax.ws.rs.Path;
 
 import com.otoil.dbcomparator.client.interfaces.SnapshotParserService;
+import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
 import com.otoil.dbcomparator.server.exceptions.ZipIsEmptyException;
-import com.otoil.dbcomparator.server.snapshotparsing.DBObjectParsingException;
+import com.otoil.dbcomparator.server.snapshotparsing.DBColumnParser;
+import com.otoil.dbcomparator.server.snapshotparsing.DBTableParser;
 import com.otoil.dbcomparator.server.snapshotparsing.DBZipEntryParser;
 import com.otoil.dbcomparator.shared.ColumnNode;
 import com.otoil.dbcomparator.shared.DatabaseNode;
@@ -31,39 +34,31 @@ public class SnapshotParserServiceImpl implements SnapshotParserService
         // some tests with zip
         try
         {
-            File file = new File(System.getProperty("java.io.tmpdir"),
-                snapshotId + ".zip");
-            ZipFile zf = new ZipFile(file);
+            ZipFile zf = openZipFile(snapshotId);
             Enumeration<? extends ZipEntry> entries = zf.entries();
-            DatabaseNode db = null;
-            DBZipEntryParser entryParser = new DBZipEntryParser();
-
-            while(entries.hasMoreElements())
+            DatabaseNode dbRoot = null;
+            DBZipEntryParser entryParser = createEntryParser();
+            
+            while (entries.hasMoreElements())
             {
                 ZipEntry entry = entries.nextElement();
-                if(db == null)
+                if (dbRoot == null)
                 {
-                    db = getDatabaseNode(entry);
+                    dbRoot = constructDatabaseNode(entry);
+                }
+                else if(!entry.isDirectory())
+                {
+                    entryParser.parse(dbRoot, zf.getInputStream(entry), null);
                 }
                 else
                 {
-                    entryParser.parse(db, zf.getInputStream(entry), () -> {
-                        
-                        try
-                        {
-                            return DBZipEntryParser.defaultZipEntryChildrenExtractor(zf.getInputStream(entry));
-                        }
-                        catch (DBObjectParsingException | IOException e)
-                        {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                            return null;
-                        }
-                    });
+                    // TODO: indicate that there are too many dirs
                 }
             }
-            
+
             System.out.println("!!!!ok!!!!\n");
+            zf.close();
+            return dbRoot;
         }
         catch (ZipIsEmptyException e)
         {
@@ -77,7 +72,7 @@ public class SnapshotParserServiceImpl implements SnapshotParserService
         {
             e.printStackTrace();
         }
-        catch(DBObjectParsingException e)
+        catch (DBObjectParsingException e)
         {
             e.printStackTrace();
         }
@@ -110,8 +105,25 @@ public class SnapshotParserServiceImpl implements SnapshotParserService
 
         return root;
     }
+    
+    private ZipFile openZipFile(String snapshotId) throws ZipException, IOException
+    {
+        File file = new File(System.getProperty("java.io.tmpdir"),
+            snapshotId + ".zip");
+        return new ZipFile(file);
+    }
+    
+    private DBZipEntryParser createEntryParser()
+    {
+        DBZipEntryParser entryParser = new DBZipEntryParser();
+        entryParser.registerSubparser(DBTableParser.FOR_TYPE,
+            new DBTableParser());
+        entryParser.registerSubparser(DBTableParser.FOR_TYPE,
+            DBColumnParser.FOR_TYPE, new DBColumnParser());
+        return entryParser;
+    }
 
-    private DatabaseNode getDatabaseNode(ZipEntry firstEntry)
+    private DatabaseNode constructDatabaseNode(ZipEntry firstEntry)
         throws ZipIsEmptyException
     {
         if (firstEntry == null)

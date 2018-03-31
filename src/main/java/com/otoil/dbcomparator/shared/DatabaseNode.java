@@ -1,12 +1,6 @@
 package com.otoil.dbcomparator.shared;
 
 
-import java.util.ArrayList;
-
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-
 /**
  * Узел базы данных (самый верхний уровень в иерархии)
  * 
