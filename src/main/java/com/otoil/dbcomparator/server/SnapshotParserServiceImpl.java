@@ -25,6 +25,7 @@ import com.otoil.dbcomparator.shared.DatabaseNode;
 public class SnapshotParserServiceImpl implements SnapshotParserService
 {
     // TODO: errors handling
+    // TODO: prevent skipping first element if there are no subfolders in zip
     public DatabaseNode parseSnapshot(String snapshotId)
     {
         try

@@ -31,6 +31,7 @@ public class ComparingModelRestImpl implements ComparingModel
     public void compare(DatabaseNode sourceRoot, DatabaseNode destRoot,
         MethodCallback<ComparisonResult> callback)
     {
+        sourceRoot.setOfSourceSnapshot(true);
         REST.withCallback(callback).call(service)
             .compareSnapshot(new ComparisonRequest(sourceRoot, destRoot));
     }

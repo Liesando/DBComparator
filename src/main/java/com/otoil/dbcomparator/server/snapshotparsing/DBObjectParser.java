@@ -64,7 +64,7 @@ public abstract class DBObjectParser<T, R extends AbstractNode>
         }
     }
 
-    protected void parseChildren(R parentDBNode, NodeList children)
+    protected final void parseChildren(R parentDBNode, NodeList children)
         throws DBObjectParsingException
     {
         for (int i = 0; i < children.getLength(); i++)

@@ -8,7 +8,6 @@ package com.otoil.dbcomparator.shared;
  */
 public class DatabaseNode extends AbstractNode
 {
-
     public DatabaseNode()
     {
         this(null);

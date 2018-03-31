@@ -39,6 +39,7 @@ public abstract class AbstractNode
         NON_CHANGED, CHANGED, DELETED, ADDED
     }
 
+    private boolean isOfSourceSnapshot = false;
     private NodeState state;
     private String name;
     private List<AbstractNode> children;
@@ -124,9 +125,8 @@ public abstract class AbstractNode
 
         // элементы со статусом "удалён" или "добавлен"
         // всем своим детям задают такой же статус
-        if (children != null &&
-                (state == NodeState.DELETED 
-                || state == NodeState.ADDED))
+        if (children != null
+            && (state == NodeState.DELETED || state == NodeState.ADDED))
         {
             for (int i = 0; i < children.size(); i++)
             {
@@ -134,7 +134,6 @@ public abstract class AbstractNode
             }
         }
     }
-
 
     public void setChildren(List<AbstractNode> children)
     {
@@ -145,7 +144,28 @@ public abstract class AbstractNode
     {
         this.name = name;
     }
-    
+
+    public final <T extends AbstractNode> T getChild(Class<T> childType, Function<AbstractNode, T> caster,
+        String childName)
+    {
+        T node = caster.apply(children.stream()
+            .filter(
+                c -> c.getClass() == childType && c.getName().equals(childName))
+            .findFirst().orElse(null));
+        
+        return node;
+    }
+
+    public boolean isOfSourceSnapshot()
+    {
+        return isOfSourceSnapshot;
+    }
+
+    public void setOfSourceSnapshot(boolean isOfSourceSnapshot)
+    {
+        this.isOfSourceSnapshot = isOfSourceSnapshot;
+    }
+
     /**
      * Может ли данный узел содержать указанного ребёнка?
      * 
