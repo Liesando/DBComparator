@@ -4,9 +4,9 @@ package com.otoil.dbcomparator.server;
 import javax.ws.rs.Path;
 
 import com.otoil.dbcomparator.client.interfaces.SnapshotComparatorService;
-import com.otoil.dbcomparator.server.snapshotcomparing.DBColumnComparator;
-import com.otoil.dbcomparator.server.snapshotcomparing.DBRootComparator;
-import com.otoil.dbcomparator.server.snapshotcomparing.DBTableComparator;
+import com.otoil.dbcomparator.server.comparing.DBColumnComparator;
+import com.otoil.dbcomparator.server.comparing.DBRootComparator;
+import com.otoil.dbcomparator.server.comparing.DBTableComparator;
 import com.otoil.dbcomparator.shared.ComparisonRequest;
 import com.otoil.dbcomparator.shared.ComparisonResult;
 

@@ -1,4 +1,4 @@
-package com.otoil.dbcomparator.server.snapshotcomparing;
+package com.otoil.dbcomparator.server.comparing;
 
 
 import java.util.ArrayList;

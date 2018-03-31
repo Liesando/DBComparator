@@ -1,4 +1,4 @@
-package com.otoil.dbcomparator.server.snapshotcomparing;
+package com.otoil.dbcomparator.server.comparing;
 
 
 import com.otoil.dbcomparator.shared.AbstractNode;

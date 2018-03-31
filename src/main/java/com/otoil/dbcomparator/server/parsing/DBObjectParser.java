@@ -1,4 +1,4 @@
-package com.otoil.dbcomparator.server.snapshotparsing;
+package com.otoil.dbcomparator.server.parsing;
 
 
 import java.util.HashMap;

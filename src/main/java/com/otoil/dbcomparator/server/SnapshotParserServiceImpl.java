@@ -14,10 +14,10 @@ import javax.ws.rs.Path;
 import com.otoil.dbcomparator.client.interfaces.SnapshotParserService;
 import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
 import com.otoil.dbcomparator.server.exceptions.ZipIsEmptyException;
-import com.otoil.dbcomparator.server.snapshotparsing.DBColumnParser;
-import com.otoil.dbcomparator.server.snapshotparsing.DBTableParser;
-import com.otoil.dbcomparator.server.snapshotparsing.DBXmlElementParserProxy;
-import com.otoil.dbcomparator.server.snapshotparsing.DBZipEntryParser;
+import com.otoil.dbcomparator.server.parsing.DBColumnParser;
+import com.otoil.dbcomparator.server.parsing.DBTableParser;
+import com.otoil.dbcomparator.server.parsing.DBXmlElementParserProxy;
+import com.otoil.dbcomparator.server.parsing.DBZipEntryParser;
 import com.otoil.dbcomparator.shared.DatabaseNode;
 
 
