@@ -15,6 +15,10 @@ public class DBTableParser extends DBXmlElementParser<TableNode>
     protected TableNode parseObjectOnly(Node t) throws DBObjectParsingException
     {
         TableNode table = new TableNode(getXmlNodeName(t));
+        table.setOwner(getXmlAttributeValue(t, "owner"));
+        table.setTablespace(getXmlAttributeValue(t, "tablespace"));
+        table.setTemporary(getXmlBooleanAttrValue(t, "temporary"));
+        table.setOfIotType(getXmlBooleanAttrValue(t, "iotType"));
         return table;
     }
 }

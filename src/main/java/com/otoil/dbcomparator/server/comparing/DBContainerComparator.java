@@ -24,6 +24,7 @@ public class DBContainerComparator<T extends AbstractNode, P extends AbstractNod
             return NodeState.NON_CHANGED;
         }
 
+        // контейнер не существует
         return node.isOfSourceSnapshot() ? NodeState.DELETED : NodeState.ADDED;
     }
 }

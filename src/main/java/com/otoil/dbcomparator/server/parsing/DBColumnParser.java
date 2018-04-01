@@ -15,6 +15,9 @@ public class DBColumnParser extends DBXmlElementParser<ColumnNode>
     protected ColumnNode parseObjectOnly(Node t) throws DBObjectParsingException
     {
         ColumnNode column = new ColumnNode(getXmlNodeName(t));
+        column.setType(getXmlAttributeValue(t, "type"));
+        column.setNullable(getXmlBooleanAttrValue(t, "nullable"));
+        column.setVirtual(getXmlBooleanAttrValue(t, "virtual"));
         return column;
     }
 

@@ -26,7 +26,10 @@ public class DBColumnComparator
             return reflectedContainer.isOfSourceSnapshot() ? NodeState.ADDED
                 : NodeState.DELETED;
         }
-        return sameColumn.getName().equals(node.getName())
+        return node.getName().equals(sameColumn.getName())
+                && node.getType().equals(sameColumn.getType())
+                && node.isNullable() == sameColumn.isNullable()
+                && node.isVirtual() == sameColumn.isVirtual()
             ? NodeState.NON_CHANGED
             : NodeState.CHANGED;
     }

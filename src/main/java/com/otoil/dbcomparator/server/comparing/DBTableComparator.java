@@ -27,6 +27,10 @@ public class DBTableComparator
         }
 
         return node.getName().equals(sameTable.getName())
+                && node.getOwner().equals(sameTable.getOwner())
+                && node.getTablespace().equals(sameTable.getTablespace())
+                && node.isTemporary() == sameTable.isTemporary()
+                && node.isOfIotType() == sameTable.isOfIotType()
             ? NodeState.NON_CHANGED
             : NodeState.CHANGED;
     }
