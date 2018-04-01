@@ -5,7 +5,13 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import com.otoil.dbcomparator.shared.AbstractNode;
 
-
+/**
+ * Класс, осуществляющий парсинг xml-элементов в указанный
+ * тип R.
+ * @author kakeru
+ *
+ * @param <R>
+ */
 public abstract class DBXmlElementParser<R extends AbstractNode>
         extends DBObjectParser<Node, R>
 {

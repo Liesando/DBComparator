@@ -24,7 +24,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 public class FileUploadServlet extends HttpServlet
 {
 
-    private static final int FILE_MAX_SIZE = 5000000;
+    private static final int FILE_MAX_SIZE = 5000000; // ~5 MB
 
     // TODO: send exceptions info to client
     @Override
@@ -76,7 +76,5 @@ public class FileUploadServlet extends HttpServlet
             // if an error occurs in item.write() method
             // TODO: display error to the client
         }
-
-        // if reached then we have files successfully uploaded
     }
 }

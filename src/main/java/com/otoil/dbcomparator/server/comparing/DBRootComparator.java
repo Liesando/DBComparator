@@ -19,8 +19,8 @@ public class DBRootComparator
     protected NodeState compare(DatabaseNode node,
         AbstractNode reflectedContainer)
     {
-        // TODO: нужно ли сравнивать имена, если они не задаются в явном виде в
-        // xml?
+        // TODO: нужно ли сравнивать имена баз данных, если они не задаются в
+        // явном виде в xml?
         return NodeState.NON_CHANGED;
     }
 
@@ -30,7 +30,7 @@ public class DBRootComparator
     {
         // в руте у нас нет контейнера для узла БД, поэтому далее,
         // когда этот метод используется в performComparison() и ему
-        // нужно передать родительский контейнер для детей (таблиц, вьюх, 
+        // нужно передать родительский контейнер для детей (таблиц, вьюх,
         // триггеров и т. д.) мы делаем вот такую вот заглушку
         return DatabaseNode.class.cast(reflectedContainer);
     }

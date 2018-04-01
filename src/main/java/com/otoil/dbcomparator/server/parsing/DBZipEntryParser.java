@@ -3,6 +3,7 @@ package com.otoil.dbcomparator.server.parsing;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,15 +15,19 @@ import org.xml.sax.SAXException;
 
 import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
 import com.otoil.dbcomparator.shared.AbstractNode;
+import com.otoil.dbcomparator.shared.ContainerNode;
+
 
 /**
- * Класс для парсинга ZipEntry (точнее, InputStream из этой ZipEntry)
- * Де-факто служит прокси для фактических подпарсерсов.
+ * Класс для парсинга ZipEntry (точнее, InputStream из этой ZipEntry) Де-факто
+ * служит прокси для фактических подпарсерсов.
+ * 
  * @author kakeru
- *
  */
 public class DBZipEntryParser extends DBObjectParser<InputStream, AbstractNode>
 {
+
+    private HashMap<String, ContainerNode> containers = new HashMap<String, ContainerNode>();
 
     @Override
     protected AbstractNode parseObjectOnly(InputStream t)
@@ -33,10 +38,12 @@ public class DBZipEntryParser extends DBObjectParser<InputStream, AbstractNode>
             Document doc = DocumentBuilderFactory.newInstance()
                 .newDocumentBuilder().parse(t);
             Element rootNode = doc.getDocumentElement();
-            if (subparsers.containsKey(rootNode.getNodeName()))
+            if (subparsers.containsKey(rootNode.getNodeName())
+                && containers.containsKey(rootNode.getNodeName()))
             {
-                subparsers.get(rootNode.getNodeName()).parse(getParentDBNode(),
-                    rootNode, rootNode::getChildNodes);
+                subparsers.get(rootNode.getNodeName()).parse(
+                    getContainerFor(rootNode.getNodeName()), rootNode,
+                    rootNode::getChildNodes);
             }
             else
             {
@@ -48,7 +55,7 @@ public class DBZipEntryParser extends DBObjectParser<InputStream, AbstractNode>
             // TODO Auto-generated catch block
             throw new DBObjectParsingException(e);
         }
-        
+
         // если подпарсер был найден, то он сам разберётся
         // с добавлением к родительскому узлу
         // этот класс - прокси, так что сам по себе он ничего не
@@ -56,22 +63,13 @@ public class DBZipEntryParser extends DBObjectParser<InputStream, AbstractNode>
         return null;
     }
 
-//    public static NodeList defaultZipEntryChildrenExtractor(InputStream in)
-//        throws DBObjectParsingException
-//    {
-//        return null;
-////        Document doc;
-////        try
-////        {
-////            doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
-////                .parse(in);
-////            Element rootNode = doc.getDocumentElement();
-////            return rootNode.getChildNodes();
-////        }
-////        catch (SAXException | IOException | ParserConfigurationException e)
-////        {
-////            // TODO Auto-generated catch block
-////            throw new DBObjectParsingException(e);
-////        }
-//    }
+    private ContainerNode getContainerFor(String xmlNodeName)
+    {
+        return containers.get(xmlNodeName);
+    }
+    
+    public final void registerContainerFor(String xmlNodeName, ContainerNode container)
+    {
+        containers.put(xmlNodeName, container);
+    }
 }

@@ -18,7 +18,9 @@ import com.otoil.dbcomparator.server.parsing.DBColumnParser;
 import com.otoil.dbcomparator.server.parsing.DBTableParser;
 import com.otoil.dbcomparator.server.parsing.DBXmlElementParserProxy;
 import com.otoil.dbcomparator.server.parsing.DBZipEntryParser;
+import com.otoil.dbcomparator.shared.ColumnsContainerNode;
 import com.otoil.dbcomparator.shared.DatabaseNode;
+import com.otoil.dbcomparator.shared.TablesContainerNode;
 
 
 @Path("snapshot-parser")
@@ -35,6 +37,10 @@ public class SnapshotParserServiceImpl implements SnapshotParserService
             DatabaseNode dbRoot = null;
             DBZipEntryParser entryParser = createEntryParser();
 
+            TablesContainerNode tablesContainer = new TablesContainerNode();
+            entryParser.registerContainerFor(
+                tablesContainer.getSubelementsType(), tablesContainer);
+
             while (entries.hasMoreElements())
             {
                 ZipEntry entry = entries.nextElement();
@@ -44,7 +50,7 @@ public class SnapshotParserServiceImpl implements SnapshotParserService
                 }
                 else if (!entry.isDirectory())
                 {
-                    entryParser.parse(dbRoot, zf.getInputStream(entry), null);
+                    entryParser.parse(null, zf.getInputStream(entry), null);
                 }
                 else
                 {
@@ -53,6 +59,7 @@ public class SnapshotParserServiceImpl implements SnapshotParserService
             }
 
             zf.close();
+            dbRoot.addChild(tablesContainer);
             return dbRoot;
         }
         catch (ZipIsEmptyException e)
@@ -89,7 +96,7 @@ public class SnapshotParserServiceImpl implements SnapshotParserService
         entryParser.registerSubparser(DBTableParser.FOR_TYPE,
             new DBTableParser());
         DBXmlElementParserProxy columnsProxy = new DBXmlElementParserProxy(
-            "columns");
+            new ColumnsContainerNode());
         columnsProxy.registerSubparser(DBColumnParser.FOR_TYPE,
             new DBColumnParser());
         entryParser.registerSubparser(DBTableParser.FOR_TYPE,

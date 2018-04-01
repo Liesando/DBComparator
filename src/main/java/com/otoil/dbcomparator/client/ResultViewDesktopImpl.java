@@ -12,9 +12,8 @@ import com.otoil.dbcomparator.shared.DatabaseNode;
 
 
 /**
- * Вьюха результатов сравнения для ПК.
- * 
- * TODO: зафиксить странное поведение с двумя сплиттерами вместо одного О.о
+ * Вьюха результатов сравнения для ПК. TODO: зафиксить странное поведение с
+ * двумя сплиттерами вместо одного О.о
  * 
  * @author kakeru
  */
@@ -35,41 +34,42 @@ public class ResultViewDesktopImpl implements ResultView
     @Override
     public void setSourceDBRoot(DatabaseNode root)
     {
-        // удаляем предыдущие деревья, если таковые были,
-        // чтобы не попасть в ситуацию с кучей копий
-        // одного и того же CellTree
-        if (sourceCellTree != null)
-        {
-            splitPanel.remove(sourceCellTree);
-        }
-
-        sourceCellTreeModel.setRoot(root);
-        sourceCellTree = new CellTree(sourceCellTreeModel, null);
-        openRecursevily(sourceCellTree);
-
+        sourceCellTree = constructCellTree(sourceCellTree, root, sourceCellTreeModel);
         splitPanel.addWest(sourceCellTree, TREE_SIZE);
     }
 
     @Override
     public void setDestinationDBRoot(DatabaseNode root)
     {
+        destCellTree = constructCellTree(destCellTree, root, destCellTreeModel);
+        splitPanel.addEast(destCellTree, TREE_SIZE);
+    }
+
+    private CellTree constructCellTree(CellTree containerCellTree, DatabaseNode root,
+        CustomCellTreeModel cellTreeModel)
+    {
         // удаляем предыдущие деревья, если таковые были,
         // чтобы не попасть в ситуацию с кучей копий
         // одного и того же CellTree
-        if (destCellTree != null)
+        if (containerCellTree != null)
         {
-            splitPanel.remove(destCellTree);
+            splitPanel.remove(containerCellTree);
         }
 
-        destCellTreeModel.setRoot(root);
-        destCellTree = new CellTree(destCellTreeModel, null);
-        openRecursevily(destCellTree);
-        
-        splitPanel.addEast(destCellTree, TREE_SIZE);
+        cellTreeModel.setRoot(root);
+        containerCellTree = new CellTree(cellTreeModel, null);
+        containerCellTree.getRootTreeNode().setChildOpen(0, true);
+        return containerCellTree;
+        // оказывается, это не так уж и удобно, когда после проведения сравнения
+        // всё добро из твоих баз вываливается на тебя в максимально развёрнутом
+        // виде
+        // TODO: подумать об удалении метода
+        // openRecursevily(destCellTree);
     }
 
     /**
      * Полностью раскрывает указанное дерево
+     * 
      * @param tree
      */
     private void openRecursevily(CellTree tree)

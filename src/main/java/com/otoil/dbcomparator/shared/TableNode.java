@@ -21,7 +21,8 @@ public class TableNode extends AbstractNode
     @Override
     protected boolean canContainChild(AbstractNode child)
     {
-        // в будущем добавятся и другие типы
-        return child instanceof ColumnNode;
+        // все данные в таблицу можно класть только внутри
+        // специальных контейнеров
+        return child instanceof ContainerNode;
     }
 }

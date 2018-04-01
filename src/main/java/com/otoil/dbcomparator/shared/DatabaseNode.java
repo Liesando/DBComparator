@@ -22,6 +22,6 @@ public class DatabaseNode extends AbstractNode
     protected boolean canContainChild(AbstractNode child)
     {
         // в будущем добавятся и другие типы
-        return child instanceof TableNode;
+        return child instanceof ContainerNode;
     }
 }

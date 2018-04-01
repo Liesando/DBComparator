@@ -25,7 +25,9 @@ import com.otoil.dbcomparator.shared.AbstractNode.NodeState;
  */
 @JsonSubTypes({@Type(value = DatabaseNode.class, name = "database"),
     @Type(value = TableNode.class, name = "table"),
-    @Type(value = ColumnNode.class, name = "column")})
+    @Type(value = ColumnNode.class, name = "column"),
+    @Type(value = TablesContainerNode.class, name = "tables-container"),
+    @Type(value = ColumnsContainerNode.class, name = "columns-container")})
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "@class")
 public abstract class AbstractNode
 {
@@ -145,14 +147,14 @@ public abstract class AbstractNode
         this.name = name;
     }
 
-    public final <T extends AbstractNode> T getChild(Class<T> childType, Function<AbstractNode, T> caster,
-        String childName)
+    public final <T extends AbstractNode> T getChild(Class<T> childType,
+        Function<AbstractNode, T> caster, String childName)
     {
         T node = caster.apply(children.stream()
             .filter(
                 c -> c.getClass() == childType && c.getName().equals(childName))
             .findFirst().orElse(null));
-        
+
         return node;
     }
 
@@ -164,6 +166,10 @@ public abstract class AbstractNode
     public void setOfSourceSnapshot(boolean isOfSourceSnapshot)
     {
         this.isOfSourceSnapshot = isOfSourceSnapshot;
+        for (int i = 0; i < children.size(); i++)
+        {
+            children.get(i).setOfSourceSnapshot(isOfSourceSnapshot);
+        }
     }
 
     /**

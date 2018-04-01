@@ -4,18 +4,19 @@ package com.otoil.dbcomparator.server.comparing;
 import com.otoil.dbcomparator.shared.AbstractNode.NodeState;
 import com.otoil.dbcomparator.shared.DatabaseNode;
 import com.otoil.dbcomparator.shared.TableNode;
+import com.otoil.dbcomparator.shared.TablesContainerNode;
 
 
 public class DBTableComparator
-        extends DBObjectComparator<TableNode, DatabaseNode>
+        extends DBObjectComparator<TableNode, TablesContainerNode>
 {
     public DBTableComparator()
     {
-        super(TableNode.class, DatabaseNode.class);
+        super(TableNode.class, TablesContainerNode.class);
     }
 
     @Override
-    protected NodeState compare(TableNode node, DatabaseNode reflectedContainer)
+    protected NodeState compare(TableNode node, TablesContainerNode reflectedContainer)
     {
         TableNode sameTable = getSameNodeFromReflectedContainer(node,
             reflectedContainer);
