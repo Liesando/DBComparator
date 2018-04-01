@@ -13,6 +13,7 @@ import com.google.gwt.view.client.TreeViewModel;
 import com.otoil.dbcomparator.shared.AbstractNode;
 import com.otoil.dbcomparator.shared.ColumnNode;
 import com.otoil.dbcomparator.shared.ColumnsContainerNode;
+import com.otoil.dbcomparator.shared.CommentaryNode;
 import com.otoil.dbcomparator.shared.ContainerNode;
 import com.otoil.dbcomparator.shared.DatabaseNode;
 import com.otoil.dbcomparator.shared.TableNode;
@@ -57,27 +58,38 @@ public class CustomCellTreeModel implements TreeViewModel
             return getNodeInfo(((DatabaseNode) value).getChildrenOfType(
                 n -> n instanceof ContainerNode, n -> (ContainerNode) n));
         }
-        
+
         // from here db containers are being handled
-        else if(value instanceof TablesContainerNode)
+        else if (value instanceof TablesContainerNode)
         {
             // return tables
             return getNodeInfo(((TablesContainerNode) value).getChildrenOfType(
                 n -> n instanceof TableNode, n -> (TableNode) n));
         }
-        
+
         // from here db containers elements are being handled
         else if (value instanceof TableNode)
         {
             // return table containers
-            return getNodeInfo(((TableNode) value).getChildrenOfType(
-                n -> n instanceof ContainerNode, n -> (ContainerNode) n));
+            return getNodeInfo(((TableNode) value).getChildren());
         }
         else if (value instanceof ColumnsContainerNode)
         {
-             // return columns
-             return getNodeInfo(((ColumnsContainerNode) value).getChildrenOfType(
-             n -> n instanceof ColumnNode, n -> (ColumnNode) n));
+            // return columns
+            return getNodeInfo(((ColumnsContainerNode) value).getChildrenOfType(
+                n -> n instanceof ColumnNode, n -> (ColumnNode) n));
+        }
+        else if (value instanceof ColumnNode)
+        {
+            ColumnNode column = (ColumnNode) value;
+            if (column.getChildren().size() > 0)
+            {
+                return getNodeInfo(column.getChildren());
+            }
+            else
+            {
+                return null;
+            }
         }
 
         return null;
@@ -113,17 +125,24 @@ public class CustomCellTreeModel implements TreeViewModel
                         public String asString()
                         {
                             String cssClass = null;
-                            switch (value.getState())
+                            if (value instanceof CommentaryNode)
                             {
-                                case ADDED:
-                                    cssClass = "db-added";
-                                    break;
-                                case CHANGED:
-                                    cssClass = "db-changed";
-                                    break;
-                                case DELETED:
-                                    cssClass = "db-deleted";
-                                    break;
+                                cssClass = "db-commentary";
+                            }
+                            else
+                            {
+                                switch (value.getState())
+                                {
+                                    case ADDED:
+                                        cssClass = "db-added";
+                                        break;
+                                    case CHANGED:
+                                        cssClass = "db-changed";
+                                        break;
+                                    case DELETED:
+                                        cssClass = "db-deleted";
+                                        break;
+                                }
                             }
 
                             return "<span"
@@ -141,7 +160,12 @@ public class CustomCellTreeModel implements TreeViewModel
     @Override
     public boolean isLeaf(Object value)
     {
-        return value instanceof ColumnNode;
+        if (!(value instanceof AbstractNode) || value == null)
+        {
+            return false;
+        }
+        AbstractNode node = (AbstractNode) value;
+        return node.getChildren().size() == 0;
     }
 
     public void setRoot(DatabaseNode root)

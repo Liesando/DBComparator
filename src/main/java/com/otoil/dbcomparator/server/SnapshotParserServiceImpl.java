@@ -15,6 +15,7 @@ import com.otoil.dbcomparator.client.interfaces.SnapshotParserService;
 import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
 import com.otoil.dbcomparator.server.exceptions.ZipIsEmptyException;
 import com.otoil.dbcomparator.server.parsing.DBColumnParser;
+import com.otoil.dbcomparator.server.parsing.DBCommentaryParser;
 import com.otoil.dbcomparator.server.parsing.DBTableParser;
 import com.otoil.dbcomparator.server.parsing.DBXmlElementParserProxy;
 import com.otoil.dbcomparator.server.parsing.DBZipEntryParser;
@@ -95,10 +96,16 @@ public class SnapshotParserServiceImpl implements SnapshotParserService
         DBZipEntryParser entryParser = new DBZipEntryParser();
         entryParser.registerSubparser(DBTableParser.FOR_TYPE,
             new DBTableParser());
+        entryParser.registerSubparser(DBTableParser.FOR_TYPE,
+            DBCommentaryParser.FOR_TYPE, new DBCommentaryParser());
+
         DBXmlElementParserProxy columnsProxy = new DBXmlElementParserProxy(
             new ColumnsContainerNode());
         columnsProxy.registerSubparser(DBColumnParser.FOR_TYPE,
             new DBColumnParser());
+        columnsProxy.registerSubparser(DBColumnParser.FOR_TYPE,
+            DBCommentaryParser.FOR_TYPE, new DBCommentaryParser());
+
         entryParser.registerSubparser(DBTableParser.FOR_TYPE,
             columnsProxy.FOR_TYPE, columnsProxy);
         return entryParser;

@@ -14,3 +14,7 @@
 .db-deleted {
 	color: red;
 }
+
+.db-commentary {
+	color: gray;
+}
