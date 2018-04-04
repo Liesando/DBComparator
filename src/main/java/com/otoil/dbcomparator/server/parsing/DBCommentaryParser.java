@@ -4,7 +4,7 @@ package com.otoil.dbcomparator.server.parsing;
 import org.w3c.dom.Node;
 
 import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
-import com.otoil.dbcomparator.shared.CommentaryNode;
+import com.otoil.dbcomparator.shared.beans.CommentaryNode;
 
 
 public class DBCommentaryParser extends DBXmlElementParser<CommentaryNode>

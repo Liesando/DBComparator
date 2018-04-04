@@ -3,7 +3,8 @@ package com.otoil.dbcomparator.server.parsing;
 
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
-import com.otoil.dbcomparator.shared.AbstractNode;
+
+import com.otoil.dbcomparator.shared.beans.AbstractNode;
 
 
 /**

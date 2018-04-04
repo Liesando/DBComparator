@@ -18,7 +18,7 @@
 
 	<servlet>
 		<servlet-name>uploadServlet</servlet-name>
-		<servlet-class>com.otoil.dbcomparator.server.FileUploadServlet</servlet-class>
+		<servlet-class>com.otoil.dbcomparator.server.services.FileUploadServlet</servlet-class>
 	</servlet>
 	
 	<servlet>
