@@ -28,7 +28,7 @@ public class TableNode extends AbstractNode
     {
         // все данные в таблицу можно класть только внутри
         // специальных контейнеров
-        return child instanceof ContainerNode || child instanceof CommentaryNode;
+        return child instanceof ContainerNode;
     }
 
     public String getOwner()

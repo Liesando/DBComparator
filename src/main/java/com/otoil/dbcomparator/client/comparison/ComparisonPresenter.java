@@ -8,9 +8,13 @@ import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.otoil.dbcomparator.client.events.SnapshotsUploadedEvent;
 import com.otoil.dbcomparator.client.events.SnapshotsUploadedEventHandler;
+import com.otoil.dbcomparator.client.events.TreeNodeSelectedEvent;
 import com.otoil.dbcomparator.client.main.ClientFactory;
+import com.otoil.dbcomparator.shared.beans.AbstractNode;
 import com.otoil.dbcomparator.shared.services.ComparisonResult;
 
 
@@ -50,7 +54,8 @@ public class ComparisonPresenter extends AbstractActivity
                                 ComparisonResult response)
                             {
                                 view.setSourceDBRoot(response.getSourceRoot());
-                                view.setDestinationDBRoot(response.getDestRoot());
+                                view.setDestinationDBRoot(
+                                    response.getDestRoot());
                             }
 
                             @Override
@@ -64,7 +69,23 @@ public class ComparisonPresenter extends AbstractActivity
                 }
             });
 
+        view.addSourceTreeSelectionChangedHandler((model, event) -> {
+            fireEvent(model, event, eventBus);
+        });
+
+        view.addDestTreeSelectionChangedHandler((model, event) -> {
+            fireEvent(model, event, eventBus);
+        });
+
         panel.setWidget(view);
+    }
+
+    private void fireEvent(SingleSelectionModel<AbstractNode> model,
+        SelectionChangeEvent event, EventBus eventBus)
+    {
+        TreeNodeSelectedEvent e = new TreeNodeSelectedEvent();
+        e.setSelectedNode(model.getSelectedObject());
+        eventBus.fireEvent(e);
     }
 
 }

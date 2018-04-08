@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 
 
 /**
@@ -26,7 +25,6 @@ import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 @JsonSubTypes({@Type(value = DatabaseNode.class, name = "database"),
     @Type(value = TableNode.class, name = "table"),
     @Type(value = ColumnNode.class, name = "column"),
-    @Type(value = CommentaryNode.class, name = "commentary"),
     @Type(value = TablesContainerNode.class, name = "tables-container"),
     @Type(value = ColumnsContainerNode.class, name = "columns-container")})
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "@class")
@@ -45,6 +43,7 @@ public abstract class AbstractNode
     private boolean isOfSourceSnapshot = false;
     private NodeState state;
     private String name;
+    private String commentary;
     private List<AbstractNode> children;
 
     protected AbstractNode(String name)
@@ -75,11 +74,6 @@ public abstract class AbstractNode
                 child.setState(state);
             }
         }
-    }
-
-    public final String getName()
-    {
-        return name;
     }
 
     public final List<AbstractNode> getChildren()
@@ -143,9 +137,29 @@ public abstract class AbstractNode
         this.children = children;
     }
 
+    public final String getName()
+    {
+        return name;
+    }
+    
     public void setName(String name)
     {
         this.name = name;
+    }
+    
+    public String getCommentary()
+    {
+        return commentary;
+    }
+
+    public void setCommentary(String commentary)
+    {
+        this.commentary = commentary;
+    }
+    
+    public boolean hasCommentary()
+    {
+        return commentary != null && commentary.trim().length() > 0;
     }
 
     public final <T extends AbstractNode> T getChild(Class<T> childType,
