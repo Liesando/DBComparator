@@ -5,9 +5,11 @@ import java.util.ArrayList;
 
 import com.google.gwt.user.cellview.client.CellTree;
 import com.google.gwt.user.cellview.client.TreeNode;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.view.client.SelectionChangeEvent.Handler;
 import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 
 
@@ -19,7 +21,7 @@ import com.otoil.dbcomparator.shared.beans.DatabaseNode;
  */
 public class ComparisonViewDesktopImpl implements ComparisonView
 {
-    private static final double TREE_SIZE = 256.0;
+    private static final double TREE_SIZE = 320.0;
     private SplitLayoutPanel splitPanel = new SplitLayoutPanel();
     private CustomCellTreeModel sourceCellTreeModel = new CustomCellTreeModel();
     private CustomCellTreeModel destCellTreeModel = new CustomCellTreeModel();
@@ -30,9 +32,26 @@ public class ComparisonViewDesktopImpl implements ComparisonView
 
     public ComparisonViewDesktopImpl()
     {
-        splitPanel.setHeight("100%");
+        splitPanel.setHeight("500px");
+        splitPanel.setWidth("100%");
+//        splitPanel.addWest(sourceScrollPanel, splitPanel.getOffsetWidth() / 2);
         splitPanel.addWest(sourceScrollPanel, TREE_SIZE);
         splitPanel.add(destScrollPanel);
+    }
+
+    @Override
+    public void addSourceTreeSelectionChangedHandler(
+        CellTreeSelectionChangedHandler handler)
+    {
+        sourceCellTreeModel.addSelectionChangeHandler(handler);
+
+    }
+
+    @Override
+    public void addDestTreeSelectionChangedHandler(
+        CellTreeSelectionChangedHandler handler)
+    {
+        destCellTreeModel.addSelectionChangeHandler(handler);
     }
 
     @Override

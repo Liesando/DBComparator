@@ -12,4 +12,6 @@ public interface ComparisonView extends IsWidget
 {
     void setSourceDBRoot(DatabaseNode root);
     void setDestinationDBRoot(DatabaseNode root);
+    void addSourceTreeSelectionChangedHandler(CellTreeSelectionChangedHandler handler);
+    void addDestTreeSelectionChangedHandler(CellTreeSelectionChangedHandler handler);
 }

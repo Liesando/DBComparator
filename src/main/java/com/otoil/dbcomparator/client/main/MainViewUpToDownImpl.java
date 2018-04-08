@@ -11,16 +11,24 @@ public class MainViewUpToDownImpl implements MainView
 {
     private static final String SNAPSHOTS_CONTAINER_HEIGHT = "32px";
     private static final String COMPARISON_CONTAINER_HEIGHT = "500px";
+    private static final String DETAILS_CONTAINER_HEIGHT = "200px";
     private VerticalPanel verticalPanel = new VerticalPanel();
     private SimplePanel snapshotsContainer = new SimplePanel();
     private SimplePanel comparisonContainer = new SimplePanel();
+    private SimplePanel detailsContainer = new SimplePanel();
 
     public MainViewUpToDownImpl()
     {
+        verticalPanel.setWidth("100%");
+        snapshotsContainer.setWidth("100%");
+        comparisonContainer.setWidth("100%");
+        detailsContainer.setWidth("100%");
         verticalPanel.add(snapshotsContainer);
         verticalPanel.add(comparisonContainer);
+        verticalPanel.add(detailsContainer);
         snapshotsContainer.setHeight(SNAPSHOTS_CONTAINER_HEIGHT);
         comparisonContainer.setHeight(COMPARISON_CONTAINER_HEIGHT);
+        detailsContainer.setHeight(DETAILS_CONTAINER_HEIGHT);
     }
     
     @Override
@@ -39,5 +47,11 @@ public class MainViewUpToDownImpl implements MainView
     public Widget asWidget()
     {
         return verticalPanel;
+    }
+
+    @Override
+    public AcceptsOneWidget detailsContainer()
+    {
+        return detailsContainer;
     }
 }

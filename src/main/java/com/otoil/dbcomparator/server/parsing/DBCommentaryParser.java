@@ -4,18 +4,18 @@ package com.otoil.dbcomparator.server.parsing;
 import org.w3c.dom.Node;
 
 import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
-import com.otoil.dbcomparator.shared.beans.CommentaryNode;
+import com.otoil.dbcomparator.shared.beans.AbstractNode;
 
 
-public class DBCommentaryParser extends DBXmlElementParser<CommentaryNode>
+public class DBCommentaryParser extends DBXmlElementParser<AbstractNode>
 {
     public static final String FOR_TYPE = "comments";
-    
+
     @Override
-    protected CommentaryNode parseObjectOnly(Node t)
+    protected AbstractNode parseObjectOnly(Node t)
         throws DBObjectParsingException
     {
-        CommentaryNode commentaryNode = new CommentaryNode(t.getTextContent());
-        return commentaryNode;
+        getParentDBNode().setCommentary(t.getTextContent());
+        return null;
     }
 }

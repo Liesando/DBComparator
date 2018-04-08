@@ -25,7 +25,7 @@ public class ColumnNode extends AbstractNode
     @Override
     protected boolean canContainChild(AbstractNode child)
     {
-        return child instanceof CommentaryNode;
+        return false;
     }
 
     public String getType()

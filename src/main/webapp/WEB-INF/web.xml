@@ -44,7 +44,7 @@
 
 	<!-- Default page to serve -->
 	<welcome-file-list>
-		<welcome-file>DBComparator.html</welcome-file>
+		<welcome-file>DBComparator.html?locale=ru</welcome-file>
 	</welcome-file-list>
 
 </web-app>

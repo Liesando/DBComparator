@@ -9,4 +9,5 @@ public interface MainView extends IsWidget
 {
     AcceptsOneWidget snapshotsContainer();
     AcceptsOneWidget comparisonContainer();
+    AcceptsOneWidget detailsContainer();
 }

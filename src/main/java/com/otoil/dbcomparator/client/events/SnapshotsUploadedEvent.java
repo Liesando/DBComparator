@@ -8,15 +8,14 @@ import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 
 /**
  * Событие успешной загрузки слепков и их парсинга в {@link AbstractNode}
+ * 
  * @author kakeru
- *
  */
 public class SnapshotsUploadedEvent
         extends GwtEvent<SnapshotsUploadedEventHandler>
 {
-    public static final Type<SnapshotsUploadedEventHandler> TYPE = 
-            new Type<SnapshotsUploadedEventHandler>();
-    
+    public static final Type<SnapshotsUploadedEventHandler> TYPE = new Type<SnapshotsUploadedEventHandler>();
+
     private final DatabaseNode source;
     private final DatabaseNode destination;
 
@@ -48,6 +47,5 @@ public class SnapshotsUploadedEvent
     {
         handler.onSnapshotsUploaded(this);
     }
-    
-    
+
 }
