@@ -5,13 +5,16 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 
 public interface DBComparatorTemplates extends SafeHtmlTemplates
 {
+    @Template("<span style=\"color: gray;\"><i>{0}</i></span>")
+    SafeHtml typeOfItem(String itemName);
+    
     @Template("<span style=\"color: blue;\"><b>{0}</b></span>")
     SafeHtml changed(String statusContent);
     
-    @Template("<span style=\"color: red;\">{0}</span>")
+    @Template("<span style=\"color: red;\"><b>{0}</b></span>")
     SafeHtml deleted(String statusContent);
     
-    @Template("<span style=\"color: green;\">{0}</span>")
+    @Template("<span style=\"color: green;\"><b>{0}</b></span>")
     SafeHtml added(String statusContent);
     
     @Template("<span class=\"{0}\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>")

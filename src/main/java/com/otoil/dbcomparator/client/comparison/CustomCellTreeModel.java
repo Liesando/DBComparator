@@ -36,13 +36,14 @@ import com.otoil.dbcomparator.shared.beans.TablesContainerNode;
  */
 public class CustomCellTreeModel implements TreeViewModel
 {
+    private static final DBComparatorResources resources = DBComparatorResources.INSTANCE;
     private SingleSelectionModel<AbstractNode> selectionModel = new SingleSelectionModel<AbstractNode>();
     private DatabaseNode root;
     private static DBComparatorTemplates templates;
 
     static
     {
-        DBComparatorResources.INSTANCE.css().ensureInjected();
+        resources.css().ensureInjected();
         templates = GWT.create(DBComparatorTemplates.class);
     }
 
@@ -146,19 +147,14 @@ public class CustomCellTreeModel implements TreeViewModel
                                     break;
                             }
 
-                            String html = "";
-                            if (value instanceof TableNode)
-                            {
-
-                                html = templates
-                                    .treeItemIcon(DBComparatorResources.INSTANCE
-                                        .css().tableSpriteClass())
-                                    .asString();
-                            }
-
+                            // first icon goes if any
+                            String html = getHtmlIconForNode(value);
+                            
+                            // then content goes
                             html += templates
                                 .treeItem(cssClass, value.getName()).asString();
 
+                            // at the end enable comments display for table
                             if (value instanceof TableNode
                                 && value.hasCommentary())
                             {
@@ -167,6 +163,7 @@ public class CustomCellTreeModel implements TreeViewModel
                                     .asString();
                             }
 
+                            // done
                             return html;
                         }
                     });
@@ -184,16 +181,56 @@ public class CustomCellTreeModel implements TreeViewModel
             ContainerNode container = (ContainerNode) node;
             if (container.getSubelementsType().equals("table"))
             {
-                return "<span class="
-                    + DBComparatorResources.INSTANCE.css().tableSpriteClass()
-                    + ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>";
+                return templates
+                    .treeItemIcon(resources.css().tableSpriteClass())
+                    .asString();
             }
         }
-        // else if (node instanceof ColumnNode)
-        // {
-        // ColumnNode column = (ColumnNode) node;
-        //
-        // }
+        else if (node instanceof ColumnNode)
+        {
+            ColumnNode column = (ColumnNode) node;
+            String type = column.getType().toUpperCase().trim();
+
+            if (type.contains("CLOB"))
+            {
+                return templates
+                    .treeItemIcon(resources.css().colClobSpriteClass())
+                    .asString();
+            }
+            else if (type.contains("BLOB"))
+            {
+                return templates
+                    .treeItemIcon(resources.css().colBlobSpriteClass())
+                    .asString();
+            }
+            else if (type.contains("DATE") || type.contains("TIMESTAMP"))
+            {
+                return templates
+                    .treeItemIcon(resources.css().colDateSpriteClass())
+                    .asString();
+            }
+            else if (type.contains("BOOLEAN"))
+            {
+                return templates
+                    .treeItemIcon(resources.css().colBooleanSpriteClass())
+                    .asString();
+            }
+            else if (type.contains("NUMBER") || type.contains("INTEGER")
+                || type.contains("BINARY_FLOAT")
+                || type.contains("BINARY_DOUBLE"))
+            {
+                return templates
+                    .treeItemIcon(resources.css().colNumberSpriteClass())
+                    .asString();
+            }
+            else if (type.contains("CHAR"))
+            {
+                // CHAR, VARCHAR, VARCHAR2
+                return templates
+                    .treeItemIcon(resources.css().colStringSpriteClass())
+                    .asString();
+            }
+        }
 
         return "";
     }

@@ -1,1 +1,27 @@
-@sprite .tableSpriteClass {gwt-image: "tableImage"; other: property;}
+@sprite .tableSpriteClass {
+	gwt-image: "tableImage";
+}
+
+@sprite .colBlobSpriteClass {
+	gwt-image: "colBlobImage";
+}
+
+@sprite .colBooleanSpriteClass {
+	gwt-image: "colBooleanImage";
+}
+
+@sprite .colClobSpriteClass {
+	gwt-image: "colClobImage";
+}
+
+@sprite .colDateSpriteClass {
+	gwt-image: "colDateImage";
+}
+
+@sprite .colNumberSpriteClass {
+	gwt-image: "colNumberImage";
+}
+
+@sprite .colStringSpriteClass {
+	gwt-image: "colStringImage";
+}

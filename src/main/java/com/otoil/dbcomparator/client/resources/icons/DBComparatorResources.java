@@ -13,4 +13,22 @@ public interface DBComparatorResources extends ClientBundle
     
     @Source("table.png")
     ImageResource tableImage();
+    
+    @Source("columntypeicons/blob_16x16.png")
+    ImageResource colBlobImage();
+    
+    @Source("columntypeicons/boolean_16x16.png")
+    ImageResource colBooleanImage();
+    
+    @Source("columntypeicons/clob_16x16.png")
+    ImageResource colClobImage();
+    
+    @Source("columntypeicons/date_16x16.png")
+    ImageResource colDateImage();
+    
+    @Source("columntypeicons/number_16x16.png")
+    ImageResource colNumberImage();
+    
+    @Source("columntypeicons/string_16x16.png")
+    ImageResource colStringImage();
 }

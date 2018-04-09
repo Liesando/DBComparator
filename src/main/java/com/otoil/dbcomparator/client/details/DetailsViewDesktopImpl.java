@@ -78,20 +78,21 @@ public class DetailsViewDesktopImpl implements DetailsView
 
     private <T extends AbstractNode> String typeOf(T node)
     {
+        String type = messages.withoutAType();
         if (node instanceof DatabaseNode)
         {
-            return messages.database();
+            type = messages.database();
         }
         else if (node instanceof TableNode)
         {
-            return messages.table();
+            type = messages.table();
         }
         else if (node instanceof ColumnNode)
         {
-            return messages.column();
+            type = messages.column();
         }
 
-        return messages.withoutAType();
+        return templates.typeOfItem(type).asString();
     }
 
     private <T extends AbstractNode> String statusOf(T node)
@@ -107,7 +108,8 @@ public class DetailsViewDesktopImpl implements DetailsView
                 return templates.deleted(messages.status(messages.deleted()))
                     .asString();
             case ADDED:
-                return templates.added(messages.status(messages.added())).asString();
+                return templates.added(messages.status(messages.added()))
+                    .asString();
         }
 
         // unreacheable
