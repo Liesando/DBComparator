@@ -3,6 +3,7 @@ package com.otoil.dbcomparator.client.details;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.RichTextArea;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.otoil.dbcomparator.client.resources.DBComparatorTemplates;
@@ -15,8 +16,13 @@ import com.otoil.dbcomparator.shared.beans.TableNode;
 
 public class DetailsViewDesktopImpl implements DetailsView
 {
-    private static final int DETAILS_AREA_LINES = 8;
-    private RichTextArea textArea = new RichTextArea();
+    private static final String SPLIT_PANEL_HEIGHT = "200px";
+    private static final double TEXT_AREA_SIZE = 320.0;
+
+    private SplitLayoutPanel splitPanel = new SplitLayoutPanel();
+    private RichTextArea sourceTextArea = new RichTextArea();
+    private RichTextArea destTextArea = new RichTextArea();
+
     private DBComparatorMessages messages = GWT
         .create(DBComparatorMessages.class);
     private DBComparatorTemplates templates = GWT
@@ -24,16 +30,23 @@ public class DetailsViewDesktopImpl implements DetailsView
 
     public DetailsViewDesktopImpl()
     {
-        textArea.setEnabled(false);
-        ;
-        // textArea.seth(DETAILS_AREA_LINES);
-        textArea.setWidth("100%");
+        splitPanel.addWest(sourceTextArea, TEXT_AREA_SIZE);
+        splitPanel.add(destTextArea);
+        splitPanel.setWidth("100%");
+        splitPanel.setHeight("100%");
+
+        sourceTextArea.setEnabled(false);
+        sourceTextArea.setWidth("100%");
+        sourceTextArea.setHeight("100%");
+        destTextArea.setEnabled(false);
+        destTextArea.setWidth("100%");
+        destTextArea.setHeight("100%");
     }
 
     @Override
     public Widget asWidget()
     {
-        return textArea;
+        return splitPanel;
     }
 
     @Override
@@ -68,7 +81,14 @@ public class DetailsViewDesktopImpl implements DetailsView
         }
         // TODO: other node types
 
-        textArea.setHTML(detailsBuilder.toString());
+        if (node.isOfSourceSnapshot())
+        {
+            sourceTextArea.setHTML(detailsBuilder.toString());
+        }
+        else
+        {
+            destTextArea.setHTML(detailsBuilder.toString());
+        }
     }
 
     private void compose(StringBuilder builder, String text)

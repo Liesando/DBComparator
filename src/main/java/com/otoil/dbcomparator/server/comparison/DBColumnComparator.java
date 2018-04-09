@@ -3,8 +3,10 @@ package com.otoil.dbcomparator.server.comparison;
 
 import com.otoil.dbcomparator.shared.beans.ColumnNode;
 import com.otoil.dbcomparator.shared.beans.ColumnsContainerNode;
-import com.otoil.dbcomparator.shared.beans.DatabaseNode;
-import com.otoil.dbcomparator.shared.beans.TableNode;
+
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+
 import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 
 
@@ -17,7 +19,8 @@ public class DBColumnComparator
     }
 
     @Override
-    protected NodeState compare(ColumnNode node, ColumnsContainerNode reflectedContainer)
+    protected NodeState compare(ColumnNode node,
+        ColumnsContainerNode reflectedContainer)
     {
         ColumnNode sameColumn = getSameNodeFromReflectedContainer(node,
             reflectedContainer);
@@ -26,11 +29,44 @@ public class DBColumnComparator
             return reflectedContainer.isOfSourceSnapshot() ? NodeState.ADDED
                 : NodeState.DELETED;
         }
-        return node.getName().equals(sameColumn.getName())
-                && node.getType().equals(sameColumn.getType())
-                && node.isNullable() == sameColumn.isNullable()
-                && node.isVirtual() == sameColumn.isVirtual()
-            ? NodeState.NON_CHANGED
-            : NodeState.CHANGED;
+
+        boolean nameChanged = !node.getName().equals(sameColumn.getName());
+        formatIf(nameChanged && node.isOfSourceSnapshot(), node, sameColumn,
+            ColumnNode::getName, ColumnNode::setName);
+
+        boolean typeChanged = !node.getType().equals(sameColumn.getType());
+        formatIf(typeChanged && node.isOfSourceSnapshot(), node, sameColumn,
+            ColumnNode::getType, ColumnNode::setType);
+
+        return !nameChanged && !typeChanged
+            && node.isNullable() == sameColumn.isNullable()
+            && node.isVirtual() == sameColumn.isVirtual()
+                ? NodeState.NON_CHANGED
+                : NodeState.CHANGED;
+    }
+
+    private void formatIf(boolean condition, ColumnNode source, ColumnNode dest,
+        Function<ColumnNode, String> valueGetter,
+        BiConsumer<ColumnNode, String> newValueSetter)
+    {
+        if (condition)
+        {
+            String formattedValue = formatPropertyChanged(
+                valueGetter.apply(source), valueGetter.apply(dest));
+            newValueSetter.accept(source, formattedValue);
+            newValueSetter.accept(dest, changed(valueGetter.apply(dest)));
+        }
+    }
+
+    private String formatPropertyChanged(String sourceValue, String destValue)
+    {
+        return String.format(
+            "<span><span style=\"color: gray;\"><i>%s</i></span> <b>---></b> <span><u>%s</u></span></span>",
+            sourceValue, destValue);
+    }
+    
+    private String changed(String str)
+    {
+        return String.format("<span style=\"color: blue;\"><u>%s</u></span>", str);
     }
 }
