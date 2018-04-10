@@ -51,22 +51,26 @@ public class DBColumnComparator
     {
         if (condition)
         {
-            String formattedValue = formatPropertyChanged(
-                valueGetter.apply(source), valueGetter.apply(dest));
-            newValueSetter.accept(source, formattedValue);
-            newValueSetter.accept(dest, changed(valueGetter.apply(dest)));
+            String formattedSourceValue = formatPropertyChanged(
+                changed(valueGetter.apply(source)), "--->", valueGetter.apply(dest));
+            String formattedDestValue = formatPropertyChanged(
+                valueGetter.apply(source), "--->", changed(valueGetter.apply(dest)));
+            newValueSetter.accept(source, formattedSourceValue);
+            newValueSetter.accept(dest, formattedDestValue);
         }
     }
 
-    private String formatPropertyChanged(String sourceValue, String destValue)
+    private String formatPropertyChanged(String sourceValue, String separator,
+        String destValue)
     {
         return String.format(
-            "<span><span style=\"color: gray;\"><i>%s</i></span> <b>---></b> <span><u>%s</u></span></span>",
-            sourceValue, destValue);
+            "<span><span style=\"color: gray;\"><i>%s</i></span> <b>%s</b> <span style=\"color: gray;\"><i>%s</i></span></span>",
+            sourceValue, separator, destValue);
     }
-    
+
     private String changed(String str)
     {
-        return String.format("<span style=\"color: blue;\"><u>%s</u></span>", str);
+        return String.format("<span style=\"color: blue;\"><u>%s</u></span>",
+            str);
     }
 }

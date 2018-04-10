@@ -1,15 +1,15 @@
 package com.otoil.dbcomparator.client.comparison;
 
 
-import java.util.ArrayList;
-
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.cellview.client.CellTree;
-import com.google.gwt.user.cellview.client.TreeNode;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent.Handler;
+import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
 import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 
 
@@ -22,6 +22,7 @@ import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 public class ComparisonViewDesktopImpl implements ComparisonView
 {
     private static final double TREE_SIZE = 320.0;
+    private VerticalPanel verticalPanel = new VerticalPanel();
     private SplitLayoutPanel splitPanel = new SplitLayoutPanel();
     private CustomCellTreeModel sourceCellTreeModel = new CustomCellTreeModel();
     private CustomCellTreeModel destCellTreeModel = new CustomCellTreeModel();
@@ -29,14 +30,34 @@ public class ComparisonViewDesktopImpl implements ComparisonView
     private ScrollPanel destScrollPanel = new ScrollPanel();
     private CellTree sourceCellTree = null;
     private CellTree destCellTree = null;
+    private DBComparatorMessages messages = GWT
+        .create(DBComparatorMessages.class);
 
     public ComparisonViewDesktopImpl()
     {
-        splitPanel.setHeight("500px");
+        verticalPanel.setWidth("100%");
+        verticalPanel.setHeight("500px");
+        
+        CheckBox hideNonChangedCB = new CheckBox(messages.hideNonChanged());
+        hideNonChangedCB.addClickHandler(event -> {
+            boolean checked = ((CheckBox) event.getSource()).getValue();
+            sourceCellTreeModel.setHideNonChanged(checked);
+            destCellTreeModel.setHideNonChanged(checked);
+
+            if (sourceCellTree != null && destCellTree != null)
+            {
+                setSourceDBRoot(sourceCellTreeModel.getRoot());
+                setDestinationDBRoot(destCellTreeModel.getRoot());
+            }
+        });
+        
+        splitPanel.setHeight("450px");
         splitPanel.setWidth("100%");
-//        splitPanel.addWest(sourceScrollPanel, splitPanel.getOffsetWidth() / 2);
         splitPanel.addWest(sourceScrollPanel, TREE_SIZE);
         splitPanel.add(destScrollPanel);
+        
+        verticalPanel.add(hideNonChangedCB);
+        verticalPanel.add(splitPanel);
     }
 
     @Override
@@ -80,6 +101,6 @@ public class ComparisonViewDesktopImpl implements ComparisonView
     @Override
     public Widget asWidget()
     {
-        return splitPanel;
+        return verticalPanel;
     }
 }

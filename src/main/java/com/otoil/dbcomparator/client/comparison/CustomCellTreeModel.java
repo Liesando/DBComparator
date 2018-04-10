@@ -3,6 +3,7 @@ package com.otoil.dbcomparator.client.comparison;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
@@ -14,6 +15,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.view.client.TreeViewModel;
 import com.otoil.dbcomparator.client.resources.DBComparatorTemplates;
 import com.otoil.dbcomparator.client.resources.icons.DBComparatorResources;
+import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
 import com.otoil.dbcomparator.shared.beans.AbstractNode;
 import com.otoil.dbcomparator.shared.beans.ColumnNode;
 import com.otoil.dbcomparator.shared.beans.ColumnsContainerNode;
@@ -21,6 +23,7 @@ import com.otoil.dbcomparator.shared.beans.ContainerNode;
 import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 import com.otoil.dbcomparator.shared.beans.TableNode;
 import com.otoil.dbcomparator.shared.beans.TablesContainerNode;
+import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 
 
 /**
@@ -38,13 +41,17 @@ public class CustomCellTreeModel implements TreeViewModel
 {
     private static final DBComparatorResources resources = DBComparatorResources.INSTANCE;
     private SingleSelectionModel<AbstractNode> selectionModel = new SingleSelectionModel<AbstractNode>();
-    private DatabaseNode root;
     private static DBComparatorTemplates templates;
+    private static DBComparatorMessages messages;
+
+    private DatabaseNode root;
+    private boolean hideNonChanged;
 
     static
     {
         resources.css().ensureInjected();
         templates = GWT.create(DBComparatorTemplates.class);
+        messages = GWT.create(DBComparatorMessages.class);
     }
 
     public CustomCellTreeModel()
@@ -75,7 +82,7 @@ public class CustomCellTreeModel implements TreeViewModel
         {
             // return db containers
             return getNodeInfo(((DatabaseNode) value).getChildrenOfType(
-                n -> n instanceof ContainerNode, n -> (ContainerNode) n));
+                    n -> n instanceof ContainerNode, n -> (ContainerNode) n));
         }
 
         // from here db containers are being handled
@@ -83,7 +90,7 @@ public class CustomCellTreeModel implements TreeViewModel
         {
             // return tables
             return getNodeInfo(((TablesContainerNode) value).getChildrenOfType(
-                n -> n instanceof TableNode, n -> (TableNode) n));
+                    n -> n instanceof TableNode, n -> (TableNode) n));
         }
 
         // from here db containers elements are being handled
@@ -96,7 +103,7 @@ public class CustomCellTreeModel implements TreeViewModel
         {
             // return columns
             return getNodeInfo(((ColumnsContainerNode) value).getChildrenOfType(
-                n -> n instanceof ColumnNode, n -> (ColumnNode) n));
+                    n -> n instanceof ColumnNode, n -> (ColumnNode) n));
         }
 
         return null;
@@ -113,7 +120,7 @@ public class CustomCellTreeModel implements TreeViewModel
         List<T> dataForDataProvider)
     {
         ListDataProvider<T> dataProvider = new ListDataProvider<T>(
-            dataForDataProvider);
+            skipNonChanged(dataForDataProvider));
         AbstractCell<T> cell = new AbstractCell<T>()
         {
             @Override
@@ -151,10 +158,10 @@ public class CustomCellTreeModel implements TreeViewModel
                             String html = getHtmlIconForNode(value);
 
                             // then content goes
-                            html += templates
-                                .treeItem(cssClass, value.getName()).asString();
+                            html += templates.treeItem(cssClass, nameFor(value))
+                                .asString();
 
-                            // at the end enable comments display
+                            // in the end comments go
                             if (value.hasCommentary())
                             {
                                 html += templates
@@ -171,6 +178,20 @@ public class CustomCellTreeModel implements TreeViewModel
         };
 
         return new DefaultNodeInfo<T>(dataProvider, cell, selectionModel, null);
+    }
+
+    private <T extends AbstractNode> List<T> skipNonChanged(List<T> children)
+    {
+        if (hideNonChanged)
+        {
+            return children.stream()
+                .filter(c -> c.getState() != NodeState.NON_CHANGED)
+                .collect(Collectors.toList());
+        }
+        else
+        {
+            return children;
+        }
     }
 
     private String getHtmlIconForNode(AbstractNode node)
@@ -234,6 +255,19 @@ public class CustomCellTreeModel implements TreeViewModel
         return "";
     }
 
+    private String nameFor(AbstractNode node)
+    {
+        if (node instanceof TablesContainerNode)
+        {
+            return messages.tables();
+        }
+        else if (node instanceof ColumnsContainerNode)
+        {
+            return messages.columns();
+        }
+        return node.getName();
+    }
+
     @Override
     public boolean isLeaf(Object value)
     {
@@ -245,9 +279,18 @@ public class CustomCellTreeModel implements TreeViewModel
         return node.getChildren().size() == 0;
     }
 
+    public DatabaseNode getRoot()
+    {
+        return root;
+    }
+
     public void setRoot(DatabaseNode root)
     {
         this.root = root;
     }
 
+    public void setHideNonChanged(boolean hideNonChanged)
+    {
+        this.hideNonChanged = hideNonChanged;
+    }
 }

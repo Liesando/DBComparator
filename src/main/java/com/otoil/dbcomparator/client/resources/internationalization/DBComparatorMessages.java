@@ -13,8 +13,14 @@ public interface DBComparatorMessages extends Messages
     @DefaultMessage("Table")
     String table();
     
+    @DefaultMessage("Tables")
+    String tables();
+    
     @DefaultMessage("Column")
     String column();
+    
+    @DefaultMessage("Columns")
+    String columns();
     
     @DefaultMessage("without a type")
     String withoutAType();
@@ -70,4 +76,6 @@ public interface DBComparatorMessages extends Messages
     @DefaultMessage("Virtual: {0}")
     String columnVirtual(String isVirtual);
     
+    @DefaultMessage("hide non-changed objects")
+    String hideNonChanged();
 }

@@ -10,15 +10,12 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.otoil.dbcomparator.client.comparison.ComparisonModel;
 
 
 /**
  * Узел, представляющий собой некоторый элемент базы в слепке (например, саму
  * базу, таблицу, столбец, вьюху и т. д.). Может содержать в себе другие узлы.
- * TODO: добавить updateParentState() и, соответственно parent, если потребуется
- * (упростит парсинг, т. к. не нужно будет следить, изменилось ли что-нибудь в
- * таблице, чтобы изменить её статус; в случае с этими методом и полем - они
- * сами позаботятся об обновлении статуса своего родителя)
  * 
  * @author kakeru
  */
@@ -31,7 +28,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 public abstract class AbstractNode
 {
     /**
-     * Состояние узла (изменяется моделью, проводящей сравнение слепков)
+     * Состояние узла (изменяется {@link ComparisonModel моделью}, проводящей
+     * сравнение слепков)
      * 
      * @author kakeru
      */
@@ -141,12 +139,12 @@ public abstract class AbstractNode
     {
         return name;
     }
-    
+
     public void setName(String name)
     {
         this.name = name;
     }
-    
+
     public String getCommentary()
     {
         return commentary;
@@ -156,7 +154,7 @@ public abstract class AbstractNode
     {
         this.commentary = commentary;
     }
-    
+
     public boolean hasCommentary()
     {
         return commentary != null && commentary.trim().length() > 0;

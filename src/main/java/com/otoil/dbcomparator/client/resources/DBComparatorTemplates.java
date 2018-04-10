@@ -30,5 +30,4 @@ public interface DBComparatorTemplates extends SafeHtmlTemplates
 
     @Template("<span class=\"db-commentary\">&nbsp;&nbsp;<i>- {0}</i></span>")
     SafeHtml treeItemComment(String comment);
-
 }
