@@ -1,5 +1,6 @@
 package com.otoil.dbcomparator.shared.services;
 
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -8,7 +9,6 @@ import javax.ws.rs.core.MediaType;
 
 import org.fusesource.restygwt.client.DirectRestService;
 
-import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 
 @Path("snapshot-comparator")
 public interface ComparisonService extends DirectRestService
@@ -16,5 +16,5 @@ public interface ComparisonService extends DirectRestService
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    ComparisonResult compareSnapshot(ComparisonRequest request);
+    ComparisonBean compareSnapshot(ComparisonBean request);
 }

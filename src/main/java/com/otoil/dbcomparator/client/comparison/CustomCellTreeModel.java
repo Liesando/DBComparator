@@ -149,14 +149,13 @@ public class CustomCellTreeModel implements TreeViewModel
 
                             // first icon goes if any
                             String html = getHtmlIconForNode(value);
-                            
+
                             // then content goes
                             html += templates
                                 .treeItem(cssClass, value.getName()).asString();
 
-                            // at the end enable comments display for table
-                            if (value instanceof TableNode
-                                && value.hasCommentary())
+                            // at the end enable comments display
+                            if (value.hasCommentary())
                             {
                                 html += templates
                                     .treeItemComment(value.getCommentary())

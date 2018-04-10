@@ -5,10 +5,7 @@ import org.fusesource.restygwt.client.MethodCallback;
 import org.fusesource.restygwt.client.REST;
 
 import com.google.gwt.core.client.GWT;
-import com.otoil.dbcomparator.shared.beans.DatabaseNode;
-import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
-import com.otoil.dbcomparator.shared.services.ComparisonRequest;
-import com.otoil.dbcomparator.shared.services.ComparisonResult;
+import com.otoil.dbcomparator.shared.services.ComparisonBean;
 import com.otoil.dbcomparator.shared.services.ComparisonService;
 
 
@@ -27,12 +24,12 @@ public class ComparisonModelRestImpl implements ComparisonModel
     }
 
     @Override
-    public void compare(DatabaseNode sourceRoot, DatabaseNode destRoot,
-        MethodCallback<ComparisonResult> callback)
+    public void compare(ComparisonBean comparisonRequest,
+        MethodCallback<ComparisonBean> callback)
     {
-        sourceRoot.setOfSourceSnapshot(true);
+        comparisonRequest.getSource().setOfSourceSnapshot(true);
         REST.withCallback(callback).call(service)
-            .compareSnapshot(new ComparisonRequest(sourceRoot, destRoot));
+            .compareSnapshot(comparisonRequest);
     }
 
 }

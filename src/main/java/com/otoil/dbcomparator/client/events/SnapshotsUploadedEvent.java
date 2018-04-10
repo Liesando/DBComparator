@@ -3,7 +3,10 @@ package com.otoil.dbcomparator.client.events;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.otoil.dbcomparator.shared.beans.AbstractNode;
-import com.otoil.dbcomparator.shared.beans.DatabaseNode;
+import com.otoil.dbcomparator.shared.services.ComparisonBean;
+
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 
 /**
@@ -11,30 +14,13 @@ import com.otoil.dbcomparator.shared.beans.DatabaseNode;
  * 
  * @author kakeru
  */
+@Data
 public class SnapshotsUploadedEvent
         extends GwtEvent<SnapshotsUploadedEventHandler>
 {
     public static final Type<SnapshotsUploadedEventHandler> TYPE = new Type<SnapshotsUploadedEventHandler>();
 
-    private final DatabaseNode source;
-    private final DatabaseNode destination;
-
-    public SnapshotsUploadedEvent(DatabaseNode source, DatabaseNode destination)
-    {
-        super();
-        this.source = source;
-        this.destination = destination;
-    }
-
-    public DatabaseNode getSource()
-    {
-        return source;
-    }
-
-    public DatabaseNode getDestination()
-    {
-        return destination;
-    }
+    private final ComparisonBean comparisonBean;
 
     @Override
     public Type<SnapshotsUploadedEventHandler> getAssociatedType()

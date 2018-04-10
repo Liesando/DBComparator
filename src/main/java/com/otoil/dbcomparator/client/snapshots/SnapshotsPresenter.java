@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.otoil.dbcomparator.client.events.SnapshotsUploadedEvent;
 import com.otoil.dbcomparator.client.main.ClientFactory;
 import com.otoil.dbcomparator.shared.beans.DatabaseNode;
+import com.otoil.dbcomparator.shared.services.ComparisonBean;
 
 
 /**
@@ -93,8 +94,8 @@ public class SnapshotsPresenter extends AbstractActivity
         // бросить эвент с наполненными данными
         if (source != null && destination != null)
         {
-            SnapshotsUploadedEvent event = new SnapshotsUploadedEvent(source,
-                destination);
+            SnapshotsUploadedEvent event = new SnapshotsUploadedEvent(
+                new ComparisonBean(source, destination));
             eventBus.fireEvent(event);
         }
     }

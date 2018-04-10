@@ -15,7 +15,7 @@ import com.otoil.dbcomparator.client.events.SnapshotsUploadedEventHandler;
 import com.otoil.dbcomparator.client.events.TreeNodeSelectedEvent;
 import com.otoil.dbcomparator.client.main.ClientFactory;
 import com.otoil.dbcomparator.shared.beans.AbstractNode;
-import com.otoil.dbcomparator.shared.services.ComparisonResult;
+import com.otoil.dbcomparator.shared.services.ComparisonBean;
 
 
 /**
@@ -45,17 +45,17 @@ public class ComparisonPresenter extends AbstractActivity
                 @Override
                 public void onSnapshotsUploaded(SnapshotsUploadedEvent event)
                 {
-                    model.compare(event.getSource(), event.getDestination(),
-                        new MethodCallback<ComparisonResult>()
+                    model.compare(event.getComparisonBean(),
+                        new MethodCallback<ComparisonBean>()
                         {
 
                             @Override
                             public void onSuccess(Method method,
-                                ComparisonResult response)
+                                ComparisonBean response)
                             {
-                                view.setSourceDBRoot(response.getSourceRoot());
+                                view.setSourceDBRoot(response.getSource());
                                 view.setDestinationDBRoot(
-                                    response.getDestRoot());
+                                    response.getDest());
                             }
 
                             @Override

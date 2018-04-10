@@ -11,8 +11,7 @@ import com.otoil.dbcomparator.shared.beans.ColumnsContainerNode;
 import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 import com.otoil.dbcomparator.shared.beans.TableNode;
 import com.otoil.dbcomparator.shared.beans.TablesContainerNode;
-import com.otoil.dbcomparator.shared.services.ComparisonRequest;
-import com.otoil.dbcomparator.shared.services.ComparisonResult;
+import com.otoil.dbcomparator.shared.services.ComparisonBean;
 import com.otoil.dbcomparator.shared.services.ComparisonService;
 
 
@@ -21,7 +20,7 @@ public class ComparisonServiceImpl implements ComparisonService
 {
 
     @Override
-    public ComparisonResult compareSnapshot(ComparisonRequest request)
+    public ComparisonBean compareSnapshot(ComparisonBean request)
     {
         DBRootComparator rootComparator = createRootComparator();
 
@@ -30,7 +29,7 @@ public class ComparisonServiceImpl implements ComparisonService
         rootComparator.performComparison(request.getDest(),
             request.getSource());
 
-        return new ComparisonResult(request.getSource(), request.getDest());
+        return new ComparisonBean(request.getSource(), request.getDest());
     }
 
     private DBRootComparator createRootComparator()
