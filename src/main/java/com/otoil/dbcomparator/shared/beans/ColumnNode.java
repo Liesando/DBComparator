@@ -1,5 +1,6 @@
 package com.otoil.dbcomparator.shared.beans;
 
+import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
 
 /**
  * Узел-столбец.
@@ -56,5 +57,11 @@ public class ColumnNode extends AbstractNode
     public void setVirtual(boolean isVirtual)
     {
         this.isVirtual = isVirtual;
+    }
+
+    @Override
+    protected String generateChangesSummary()
+    {
+        return null;
     }
 }

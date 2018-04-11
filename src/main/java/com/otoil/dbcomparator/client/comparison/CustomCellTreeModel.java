@@ -82,7 +82,7 @@ public class CustomCellTreeModel implements TreeViewModel
         {
             // return db containers
             return getNodeInfo(((DatabaseNode) value).getChildrenOfType(
-                    n -> n instanceof ContainerNode, n -> (ContainerNode) n));
+                n -> n instanceof ContainerNode, n -> (ContainerNode) n));
         }
 
         // from here db containers are being handled
@@ -90,7 +90,7 @@ public class CustomCellTreeModel implements TreeViewModel
         {
             // return tables
             return getNodeInfo(((TablesContainerNode) value).getChildrenOfType(
-                    n -> n instanceof TableNode, n -> (TableNode) n));
+                n -> n instanceof TableNode, n -> (TableNode) n));
         }
 
         // from here db containers elements are being handled
@@ -103,7 +103,7 @@ public class CustomCellTreeModel implements TreeViewModel
         {
             // return columns
             return getNodeInfo(((ColumnsContainerNode) value).getChildrenOfType(
-                    n -> n instanceof ColumnNode, n -> (ColumnNode) n));
+                n -> n instanceof ColumnNode, n -> (ColumnNode) n));
         }
 
         return null;
@@ -158,7 +158,9 @@ public class CustomCellTreeModel implements TreeViewModel
                             String html = getHtmlIconForNode(value);
 
                             // then content goes
-                            html += templates.treeItem(cssClass, nameFor(value))
+                            html += templates
+                                .treeItem(cssClass,
+                                    value.getLocalizedName())
                                 .asString();
 
                             // in the end comments go
@@ -253,19 +255,6 @@ public class CustomCellTreeModel implements TreeViewModel
         }
 
         return "";
-    }
-
-    private String nameFor(AbstractNode node)
-    {
-        if (node instanceof TablesContainerNode)
-        {
-            return messages.tables();
-        }
-        else if (node instanceof ColumnsContainerNode)
-        {
-            return messages.columns();
-        }
-        return node.getName();
     }
 
     @Override

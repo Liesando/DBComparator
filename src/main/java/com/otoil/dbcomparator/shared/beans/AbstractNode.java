@@ -2,15 +2,20 @@ package com.otoil.dbcomparator.shared.beans;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.google.gwt.core.client.GWT;
 import com.otoil.dbcomparator.client.comparison.ComparisonModel;
+import com.otoil.dbcomparator.client.resources.DBComparatorTemplates;
+import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
 
 
 /**
@@ -27,6 +32,12 @@ import com.otoil.dbcomparator.client.comparison.ComparisonModel;
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "@class")
 public abstract class AbstractNode
 {
+    private static final String TABULATION = "&nbsp;&nbsp;&nbsp;&nbsp;";
+    protected static final DBComparatorMessages localizer = GWT
+        .create(DBComparatorMessages.class);
+    protected static final DBComparatorTemplates templates = GWT
+        .create(DBComparatorTemplates.class);
+
     /**
      * Состояние узла (изменяется {@link ComparisonModel моделью}, проводящей
      * сравнение слепков)
@@ -42,6 +53,7 @@ public abstract class AbstractNode
     private NodeState state;
     private String name;
     private String commentary;
+    private String changesSummary;
     private List<AbstractNode> children;
 
     protected AbstractNode(String name)
@@ -183,6 +195,78 @@ public abstract class AbstractNode
         {
             children.get(i).setOfSourceSnapshot(isOfSourceSnapshot);
         }
+    }
+
+    public boolean hasSummary()
+    {
+        return changesSummary != null && changesSummary.trim().length() > 0;
+    }
+
+    @JsonIgnore
+    public String getChangesSummary(String prefix)
+    {
+        if (changesSummary == null)
+        {
+            changesSummary = generateChangesSummary(prefix);
+        }
+        return changesSummary;
+    }
+    
+    @JsonIgnore
+    public String getChangesSummary()
+    {
+        return getChangesSummary("");
+    }
+
+    /**
+     * Генерирует html-форматированную строку с краткой информацией об
+     * изменениях в детях этого узла. Переопределять в подклассах по надобности.
+     * Классы-листья должны возвращать null
+     * 
+     * @return краткая информация или null
+     */
+    protected String generateChangesSummary(String prefix)
+    {
+        StringBuilder summaryBuilder = new StringBuilder();
+        Iterator<AbstractNode> it = getChildren().iterator();
+        while (it.hasNext())
+        {
+            if (summaryBuilder.length() > 0)
+            {
+                summaryBuilder.append("<br>");
+            }
+            AbstractNode node = it.next();
+            summaryBuilder.append(prefix != "" ? prefix : TABULATION);
+            summaryBuilder.append(node.getLocalizedName());
+            summaryBuilder.append(": ");
+            summaryBuilder.append(node.getChangesSummary());
+        }
+
+        return summaryBuilder.toString();
+    }
+    
+    protected String generateChangesSummary()
+    {
+        return generateChangesSummary("");
+    }
+
+    public static String localizedNameFor(AbstractNode node,
+        DBComparatorMessages localizer)
+    {
+        if (node instanceof TablesContainerNode)
+        {
+            return localizer.tables();
+        }
+        else if (node instanceof ColumnsContainerNode)
+        {
+            return localizer.columns();
+        }
+        return node.getName();
+    }
+
+    public String getLocalizedName()
+    {
+        return localizedNameFor(this, localizer);
     }
 
     /**

@@ -1,6 +1,11 @@
 package com.otoil.dbcomparator.shared.beans;
 
 
+import java.util.Iterator;
+
+import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
+
+
 /**
  * Узел базы данных (самый верхний уровень в иерархии)
  * 

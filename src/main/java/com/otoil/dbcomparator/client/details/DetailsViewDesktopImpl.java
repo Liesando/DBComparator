@@ -54,11 +54,19 @@ public class DetailsViewDesktopImpl implements DetailsView
     {
         StringBuilder detailsBuilder = new StringBuilder();
 
+        // type first
         compose(detailsBuilder, typeOf(node));
+        
+        // then name
         compose(detailsBuilder, messages.name(node.getName()));
+        
+        // then comment
         compose(detailsBuilder, messages.commentary(node.getCommentary()));
+        
+        // then status
         compose(detailsBuilder, statusOf(node));
 
+        // specifics
         if (node instanceof TableNode)
         {
             TableNode table = (TableNode) node;
@@ -81,6 +89,14 @@ public class DetailsViewDesktopImpl implements DetailsView
         }
         // TODO: other node types
 
+        // summary (if any)
+        String summary = node.getChangesSummary();
+        if(summary != null)
+        {
+            compose(detailsBuilder, messages.summary(summary));
+        }
+        
+        // print
         if (node.isOfSourceSnapshot())
         {
             sourceTextArea.setHTML(detailsBuilder.toString());
@@ -93,7 +109,8 @@ public class DetailsViewDesktopImpl implements DetailsView
 
     private void compose(StringBuilder builder, String text)
     {
-        builder.append(text + "<br>");
+        builder.append(text);
+        builder.append("<br>");
     }
 
     private <T extends AbstractNode> String typeOf(T node)

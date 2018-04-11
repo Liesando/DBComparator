@@ -35,6 +35,24 @@ public interface DBComparatorMessages extends Messages
     @DefaultMessage("Status: {0}")
     String status(String status);
     
+    @DefaultMessage("<br>Summary:<br>{0}")
+    String summary(String text);
+    
+    @DefaultMessage("non-changed")
+    String summaryNonChanged();
+    
+    @DefaultMessage("changed")
+    String summaryChanged();
+    
+    @DefaultMessage("deleted")
+    String summaryDeleted();
+    
+    @DefaultMessage("added")
+    String summaryAdded();
+    
+    @DefaultMessage("total")
+    String summaryTotal();
+    
     @DefaultMessage("non-changed")
     String nonChanged();
     
