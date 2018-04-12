@@ -14,13 +14,16 @@ import javax.ws.rs.Path;
 import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
 import com.otoil.dbcomparator.server.exceptions.ZipIsEmptyException;
 import com.otoil.dbcomparator.server.parsing.DBColumnParser;
-import com.otoil.dbcomparator.server.parsing.DBCommentaryParser;
+import com.otoil.dbcomparator.server.parsing.DBPrimaryConstraintParser;
+import com.otoil.dbcomparator.server.parsing.DBPrimaryKeyColumnParser;
 import com.otoil.dbcomparator.server.parsing.DBTableParser;
 import com.otoil.dbcomparator.server.parsing.DBXmlElementParserProxy;
 import com.otoil.dbcomparator.server.parsing.DBZipEntryParser;
-import com.otoil.dbcomparator.shared.beans.ColumnsContainerNode;
+import com.otoil.dbcomparator.server.parsing.flattening.DBCommentaryParser;
 import com.otoil.dbcomparator.shared.beans.DatabaseNode;
-import com.otoil.dbcomparator.shared.beans.TablesContainerNode;
+import com.otoil.dbcomparator.shared.beans.containers.ColumnsContainerNode;
+import com.otoil.dbcomparator.shared.beans.containers.ConstraintsContainerNode;
+import com.otoil.dbcomparator.shared.beans.containers.TablesContainerNode;
 import com.otoil.dbcomparator.shared.services.SnapshotsParserService;
 
 
@@ -96,18 +99,33 @@ public class SnapshotsParserServiceImpl implements SnapshotsParserService
         DBZipEntryParser entryParser = new DBZipEntryParser();
         entryParser.registerSubparser(DBTableParser.FOR_TYPE,
             new DBTableParser());
-        entryParser.registerSubparser(DBTableParser.FOR_TYPE,
-            DBCommentaryParser.FOR_TYPE, new DBCommentaryParser());
+        entryParser.registerSubparser(DBTableParser.FOR_TYPE, "comments",
+            new DBCommentaryParser());
 
         DBXmlElementParserProxy columnsProxy = new DBXmlElementParserProxy(
             new ColumnsContainerNode());
         columnsProxy.registerSubparser(DBColumnParser.FOR_TYPE,
             new DBColumnParser());
-        columnsProxy.registerSubparser(DBColumnParser.FOR_TYPE,
-            DBCommentaryParser.FOR_TYPE, new DBCommentaryParser());
+        columnsProxy.registerSubparser(DBColumnParser.FOR_TYPE, "comments",
+            new DBCommentaryParser());
 
         entryParser.registerSubparser(DBTableParser.FOR_TYPE,
             columnsProxy.FOR_TYPE, columnsProxy);
+
+        DBXmlElementParserProxy constraintsProxy = new DBXmlElementParserProxy(
+            new ConstraintsContainerNode());
+
+        DBPrimaryConstraintParser pkConstraintParser = new DBPrimaryConstraintParser();
+        DBPrimaryKeyColumnParser pkColumnParser = new DBPrimaryKeyColumnParser();
+        pkConstraintParser.registerSubparser(pkColumnParser.FOR_TYPE,
+            pkColumnParser);
+
+        constraintsProxy.registerSubparser(DBPrimaryConstraintParser.FOR_TYPE,
+            pkConstraintParser);
+
+        entryParser.registerSubparser(DBTableParser.FOR_TYPE,
+            constraintsProxy.FOR_TYPE, constraintsProxy);
+
         return entryParser;
     }
 

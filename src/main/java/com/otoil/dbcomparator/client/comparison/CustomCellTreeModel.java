@@ -18,12 +18,13 @@ import com.otoil.dbcomparator.client.resources.icons.DBComparatorResources;
 import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
 import com.otoil.dbcomparator.shared.beans.AbstractNode;
 import com.otoil.dbcomparator.shared.beans.ColumnNode;
-import com.otoil.dbcomparator.shared.beans.ColumnsContainerNode;
-import com.otoil.dbcomparator.shared.beans.ContainerNode;
 import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 import com.otoil.dbcomparator.shared.beans.TableNode;
-import com.otoil.dbcomparator.shared.beans.TablesContainerNode;
 import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
+import com.otoil.dbcomparator.shared.beans.containers.ColumnsContainerNode;
+import com.otoil.dbcomparator.shared.beans.containers.ConstraintsContainerNode;
+import com.otoil.dbcomparator.shared.beans.containers.ContainerNode;
+import com.otoil.dbcomparator.shared.beans.containers.TablesContainerNode;
 
 
 /**
@@ -99,11 +100,10 @@ public class CustomCellTreeModel implements TreeViewModel
             // return table containers
             return getNodeInfo(((TableNode) value).getChildren());
         }
-        else if (value instanceof ColumnsContainerNode)
+        else if (value instanceof ContainerNode)
         {
             // return columns
-            return getNodeInfo(((ColumnsContainerNode) value).getChildrenOfType(
-                n -> n instanceof ColumnNode, n -> (ColumnNode) n));
+            return getNodeInfo(((ContainerNode) value).getChildren());
         }
 
         return null;
@@ -160,7 +160,7 @@ public class CustomCellTreeModel implements TreeViewModel
                             // then content goes
                             html += templates
                                 .treeItem(cssClass,
-                                    value.getLocalizedName())
+                                    value.getLocalizedName(messages))
                                 .asString();
 
                             // in the end comments go
@@ -198,15 +198,10 @@ public class CustomCellTreeModel implements TreeViewModel
 
     private String getHtmlIconForNode(AbstractNode node)
     {
-        if (node instanceof ContainerNode)
+        if (node instanceof TablesContainerNode)
         {
-            ContainerNode container = (ContainerNode) node;
-            if (container.getSubelementsType().equals("table"))
-            {
-                return templates
-                    .treeItemIcon(resources.css().tableSpriteClass())
-                    .asString();
-            }
+            return templates.treeItemIcon(resources.css().tableSpriteClass())
+                .asString();
         }
         else if (node instanceof ColumnNode)
         {

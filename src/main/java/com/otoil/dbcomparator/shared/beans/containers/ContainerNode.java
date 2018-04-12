@@ -1,4 +1,4 @@
-package com.otoil.dbcomparator.shared.beans;
+package com.otoil.dbcomparator.shared.beans.containers;
 
 
 import java.util.Iterator;
@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.function.Function;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
+import com.otoil.dbcomparator.client.resources.DBComparatorTemplates;
 import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
+import com.otoil.dbcomparator.shared.beans.AbstractNode;
 import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 
 
@@ -69,7 +71,8 @@ public abstract class ContainerNode extends AbstractNode implements Cloneable
     }
 
     @Override
-    protected String generateChangesSummary(String prefix)
+    protected String generateChangesSummary(String prefix,
+        DBComparatorMessages localizer, DBComparatorTemplates templates)
     {
         int changed = 0;
         int nonChanged = 0;
@@ -123,7 +126,9 @@ public abstract class ContainerNode extends AbstractNode implements Cloneable
     }
 
     @Override
-    public abstract void setName(String name);
+    public void setName(String name)
+    {
+    }
 
     public abstract ContainerNode clone();
 }

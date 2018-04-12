@@ -6,7 +6,7 @@ import org.w3c.dom.NodeList;
 
 import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
 import com.otoil.dbcomparator.shared.beans.AbstractNode;
-import com.otoil.dbcomparator.shared.beans.ContainerNode;
+import com.otoil.dbcomparator.shared.beans.containers.ContainerNode;
 
 
 /**

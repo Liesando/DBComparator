@@ -2,8 +2,6 @@ package com.otoil.dbcomparator.server.parsing;
 
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.zip.ZipEntry;
 

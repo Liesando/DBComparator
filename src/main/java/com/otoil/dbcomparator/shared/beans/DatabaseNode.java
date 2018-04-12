@@ -4,6 +4,7 @@ package com.otoil.dbcomparator.shared.beans;
 import java.util.Iterator;
 
 import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
+import com.otoil.dbcomparator.shared.beans.containers.ContainerNode;
 
 
 /**

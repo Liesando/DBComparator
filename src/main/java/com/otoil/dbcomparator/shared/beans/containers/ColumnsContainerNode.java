@@ -1,4 +1,8 @@
-package com.otoil.dbcomparator.shared.beans;
+package com.otoil.dbcomparator.shared.beans.containers;
+
+import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
+import com.otoil.dbcomparator.shared.beans.AbstractNode;
+import com.otoil.dbcomparator.shared.beans.ColumnNode;
 
 public class ColumnsContainerNode extends ContainerNode
 {
@@ -14,18 +18,15 @@ public class ColumnsContainerNode extends ContainerNode
     }
 
     @Override
-    public void setName(String name)
-    {
-        // do we need to throw here?
-//        if(!this.getName().equals(name))
-//        {
-//        }
-    }
-
-    @Override
     public ContainerNode clone()
     {
         // не копируем детей
         return new ColumnsContainerNode();
+    }
+    
+    @Override
+    public String getLocalizedName(DBComparatorMessages localizer)
+    {
+        return localizer.columns();
     }
 }

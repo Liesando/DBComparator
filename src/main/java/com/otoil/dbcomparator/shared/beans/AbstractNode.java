@@ -12,31 +12,33 @@ import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-import com.google.gwt.core.client.GWT;
 import com.otoil.dbcomparator.client.comparison.ComparisonModel;
 import com.otoil.dbcomparator.client.resources.DBComparatorTemplates;
 import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
+import com.otoil.dbcomparator.shared.beans.constraints.PrimaryConstraintNode;
+import com.otoil.dbcomparator.shared.beans.containers.ColumnsContainerNode;
+import com.otoil.dbcomparator.shared.beans.containers.ConstraintsContainerNode;
+import com.otoil.dbcomparator.shared.beans.containers.TablesContainerNode;
 
 
 /**
  * Узел, представляющий собой некоторый элемент базы в слепке (например, саму
- * базу, таблицу, столбец, вьюху и т. д.). Может содержать в себе другие узлы.
+ * базу, таблицу, столбец, вьюху и т. д.). Узел может содержать в себе другие
+ * узлы.
  * 
  * @author kakeru
  */
 @JsonSubTypes({@Type(value = DatabaseNode.class, name = "database"),
     @Type(value = TableNode.class, name = "table"),
     @Type(value = ColumnNode.class, name = "column"),
+    @Type(value = PrimaryConstraintNode.class, name = "primary-constraint"),
     @Type(value = TablesContainerNode.class, name = "tables-container"),
+    @Type(value = ConstraintsContainerNode.class, name = "constraints-container"),
     @Type(value = ColumnsContainerNode.class, name = "columns-container")})
 @JsonTypeInfo(use = Id.NAME, include = As.PROPERTY, property = "@class")
 public abstract class AbstractNode
 {
-    private static final String TABULATION = "&nbsp;&nbsp;&nbsp;&nbsp;";
-    protected static final DBComparatorMessages localizer = GWT
-        .create(DBComparatorMessages.class);
-    protected static final DBComparatorTemplates templates = GWT
-        .create(DBComparatorTemplates.class);
+    protected static final String TABULATION = "&nbsp;&nbsp;&nbsp;&nbsp;";
 
     /**
      * Состояние узла (изменяется {@link ComparisonModel моделью}, проводящей
@@ -49,10 +51,16 @@ public abstract class AbstractNode
         NON_CHANGED, CHANGED, DELETED, ADDED
     }
 
+    // принадлежит ли узел исходному (старому) слепку?
     private boolean isOfSourceSnapshot = false;
     private NodeState state;
     private String name;
     private String commentary;
+
+    /**
+     * содержит форматированную строку со сводкой об изменениях внутри этого
+     * узла - его детях
+     */
     private String changesSummary;
     private List<AbstractNode> children;
 
@@ -92,8 +100,7 @@ public abstract class AbstractNode
     }
 
     /**
-     * Возвращает детей данного узла определённого типа. (см. закомментированную
-     * версию функции ниже, если возникают вопросы, зачем так сложно).
+     * Возвращает детей данного узла определённого типа.
      * 
      * @param instanceChecker функция, проверяющая, нужный ли тип у узла
      * @param caster функция, преобразующая узел к нужному типу
@@ -111,6 +118,9 @@ public abstract class AbstractNode
          * потребуется:) ) получить детей только заданного типа - функция будет
          * полезной. Будет ли она полезной после завершения разработки - вопрос.
          */
+
+        // return children.stream().filter(c -> instanceChecker.apply(c))
+        // .map(c -> caster.apply(c)).collect(Collectors.toList());
 
         ArrayList<T> result = new ArrayList<T>();
         children.forEach(abstractNode -> {
@@ -203,19 +213,22 @@ public abstract class AbstractNode
     }
 
     @JsonIgnore
-    public String getChangesSummary(String prefix)
+    public String getChangesSummary(String prefix,
+        DBComparatorMessages localizer, DBComparatorTemplates templates)
     {
         if (changesSummary == null)
         {
-            changesSummary = generateChangesSummary(prefix);
+            changesSummary = generateChangesSummary(prefix, localizer,
+                templates);
         }
         return changesSummary;
     }
-    
+
     @JsonIgnore
-    public String getChangesSummary()
+    public String getChangesSummary(DBComparatorMessages localizer,
+        DBComparatorTemplates templates)
     {
-        return getChangesSummary("");
+        return getChangesSummary("", localizer, templates);
     }
 
     /**
@@ -225,7 +238,8 @@ public abstract class AbstractNode
      * 
      * @return краткая информация или null
      */
-    protected String generateChangesSummary(String prefix)
+    protected String generateChangesSummary(String prefix,
+        DBComparatorMessages localizer, DBComparatorTemplates templates)
     {
         StringBuilder summaryBuilder = new StringBuilder();
         Iterator<AbstractNode> it = getChildren().iterator();
@@ -237,17 +251,18 @@ public abstract class AbstractNode
             }
             AbstractNode node = it.next();
             summaryBuilder.append(prefix != "" ? prefix : TABULATION);
-            summaryBuilder.append(node.getLocalizedName());
+            summaryBuilder.append(node.getLocalizedName(localizer));
             summaryBuilder.append(": ");
-            summaryBuilder.append(node.getChangesSummary());
+            summaryBuilder.append(node.getChangesSummary(localizer, templates));
         }
 
         return summaryBuilder.toString();
     }
-    
-    protected String generateChangesSummary()
+
+    protected String generateChangesSummary(DBComparatorMessages localizer,
+        DBComparatorTemplates templates)
     {
-        return generateChangesSummary("");
+        return generateChangesSummary("", localizer, templates);
     }
 
     public static String localizedNameFor(AbstractNode node,
@@ -264,9 +279,9 @@ public abstract class AbstractNode
         return node.getName();
     }
 
-    public String getLocalizedName()
+    public String getLocalizedName(DBComparatorMessages localizer)
     {
-        return localizedNameFor(this, localizer);
+        return getName();
     }
 
     /**

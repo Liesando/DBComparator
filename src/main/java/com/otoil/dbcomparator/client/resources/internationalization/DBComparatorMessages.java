@@ -22,6 +22,9 @@ public interface DBComparatorMessages extends Messages
     @DefaultMessage("Columns")
     String columns();
     
+    @DefaultMessage("Constraints")
+    String constraints();
+    
     @DefaultMessage("without a type")
     String withoutAType();
     

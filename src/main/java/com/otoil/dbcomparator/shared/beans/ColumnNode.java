@@ -1,23 +1,26 @@
 package com.otoil.dbcomparator.shared.beans;
 
+
+import com.otoil.dbcomparator.client.resources.DBComparatorTemplates;
 import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
+
 
 /**
  * Узел-столбец.
+ * 
  * @author kakeru
- *
  */
 public class ColumnNode extends AbstractNode
 {
     private String type;
     private boolean isNullable;
     private boolean isVirtual;
-    
+
     public ColumnNode()
     {
         this(null);
     }
-    
+
     public ColumnNode(String name)
     {
         super(name);
@@ -60,7 +63,8 @@ public class ColumnNode extends AbstractNode
     }
 
     @Override
-    protected String generateChangesSummary()
+    protected String generateChangesSummary(String prefix,
+        DBComparatorMessages localizer, DBComparatorTemplates templates)
     {
         return null;
     }

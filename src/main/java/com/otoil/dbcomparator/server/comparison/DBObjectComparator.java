@@ -3,8 +3,11 @@ package com.otoil.dbcomparator.server.comparison;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 import com.otoil.dbcomparator.shared.beans.AbstractNode;
+import com.otoil.dbcomparator.shared.beans.ColumnNode;
 import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 
@@ -36,7 +39,8 @@ public abstract class DBObjectComparator<T extends AbstractNode, P extends Abstr
      * @param reflectedContainer контейнер из другого слепка, в котором может
      *            находиться другая версия узла <code>node</code>
      */
-    public final NodeState performComparison(AbstractNode node, P reflectedContainer)
+    public final NodeState performComparison(AbstractNode node,
+        P reflectedContainer)
     {
         NodeState result = compare(getType().cast(node), reflectedContainer);
 
@@ -58,16 +62,18 @@ public abstract class DBObjectComparator<T extends AbstractNode, P extends Abstr
 
             if (sub != null)
             {
-                NodeState subResult = sub.performComparison(child, getSameNodeFromReflectedContainer(
-                    getType().cast(node), reflectedContainer));
-                
-                if(result == NodeState.NON_CHANGED && subResult != NodeState.NON_CHANGED)
+                NodeState subResult = sub.performComparison(child,
+                    getSameNodeFromReflectedContainer(getType().cast(node),
+                        reflectedContainer));
+
+                if (result == NodeState.NON_CHANGED
+                    && subResult != NodeState.NON_CHANGED)
                 {
                     result = NodeState.CHANGED;
                 }
             }
         }
-        
+
         node.setState(result);
         return result;
     }
@@ -92,10 +98,42 @@ public abstract class DBObjectComparator<T extends AbstractNode, P extends Abstr
         return parentType;
     }
 
-    protected T getSameNodeFromReflectedContainer(T node,
-        P reflectedContainer)
+    protected T getSameNodeFromReflectedContainer(T node, P reflectedContainer)
     {
-        return reflectedContainer.getChild(getType(), getType()::cast, node.getName());
+        return reflectedContainer.getChild(getType(), getType()::cast,
+            node.getName());
+    }
+
+    protected <T extends AbstractNode> void formatValueIfChanged(T source,
+        T dest, Function<T, String> valueGetter,
+        BiConsumer<T, String> newValueSetter)
+    {
+        if (!valueGetter.apply(source).equals(valueGetter.apply(dest))
+            && source.isOfSourceSnapshot())
+        {
+            String formattedSourceValue = formatPropertyChanged(
+                changed(valueGetter.apply(source)), "--->",
+                valueGetter.apply(dest));
+            String formattedDestValue = formatPropertyChanged(
+                valueGetter.apply(source), "--->",
+                changed(valueGetter.apply(dest)));
+            newValueSetter.accept(source, formattedSourceValue);
+            newValueSetter.accept(dest, formattedDestValue);
+        }
+    }
+
+    protected String formatPropertyChanged(String sourceValue, String separator,
+        String destValue)
+    {
+        return String.format(
+            "<span><span style=\"color: gray;\"><i>%s</i></span> <b>%s</b> <span style=\"color: gray;\"><i>%s</i></span></span>",
+            sourceValue, separator, destValue);
+    }
+
+    protected String changed(String str)
+    {
+        return String.format("<span style=\"color: blue;\"><u>%s</u></span>",
+            str);
     }
 
     protected abstract NodeState compare(T node, P reflectedContainer);

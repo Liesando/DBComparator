@@ -56,13 +56,13 @@ public class DetailsViewDesktopImpl implements DetailsView
 
         // type first
         compose(detailsBuilder, typeOf(node));
-        
+
         // then name
         compose(detailsBuilder, messages.name(node.getName()));
-        
+
         // then comment
         compose(detailsBuilder, messages.commentary(node.getCommentary()));
-        
+
         // then status
         compose(detailsBuilder, statusOf(node));
 
@@ -90,12 +90,12 @@ public class DetailsViewDesktopImpl implements DetailsView
         // TODO: other node types
 
         // summary (if any)
-        String summary = node.getChangesSummary();
-        if(summary != null)
+        String summary = node.getChangesSummary(messages, templates);
+        if (summary != null && summary.trim().length() > 0)
         {
             compose(detailsBuilder, messages.summary(summary));
         }
-        
+
         // print
         if (node.isOfSourceSnapshot())
         {

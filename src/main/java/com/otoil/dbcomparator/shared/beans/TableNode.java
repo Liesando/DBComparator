@@ -1,5 +1,6 @@
 package com.otoil.dbcomparator.shared.beans;
 
+import com.otoil.dbcomparator.shared.beans.containers.ContainerNode;
 
 /** 
  * Узел-таблица.

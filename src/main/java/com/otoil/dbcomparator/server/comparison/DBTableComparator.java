@@ -3,8 +3,8 @@ package com.otoil.dbcomparator.server.comparison;
 
 import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 import com.otoil.dbcomparator.shared.beans.TableNode;
-import com.otoil.dbcomparator.shared.beans.TablesContainerNode;
 import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
+import com.otoil.dbcomparator.shared.beans.containers.TablesContainerNode;
 
 
 public class DBTableComparator

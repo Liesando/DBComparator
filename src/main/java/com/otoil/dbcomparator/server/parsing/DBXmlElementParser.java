@@ -16,18 +16,18 @@ import com.otoil.dbcomparator.shared.beans.AbstractNode;
 public abstract class DBXmlElementParser<R extends AbstractNode>
         extends DBObjectParser<Node, R>
 {
-    protected String getXmlNodeName(Node n)
+    protected static String getXmlNodeName(Node n)
     {
         String nodeName = getXmlAttributeValue(n, "name");
         return nodeName == "" ? "(not specified)": nodeName;
     }
     
-    protected boolean getXmlBooleanAttrValue(Node n, String attributeName)
+    protected static boolean getXmlBooleanAttrValue(Node n, String attributeName)
     {
         return getXmlAttributeValue(n, attributeName).equalsIgnoreCase("Y");
     }
 
-    protected String getXmlAttributeValue(Node n, String attributeName)
+    protected static String getXmlAttributeValue(Node n, String attributeName)
     {
         NamedNodeMap attrs = n.getAttributes();
         Node node = attrs.getNamedItem(attributeName);
