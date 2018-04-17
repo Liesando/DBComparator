@@ -3,12 +3,9 @@ package com.otoil.dbcomparator.client.main;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.user.client.ui.Widget;
 import com.otoil.dbcomparator.client.snapshots.SnapshotsView;
 import com.otoil.dbcomparator.client.snapshots.SnapshotsViewZipImpl;
-import com.otoil.dbcomparator.shared.beans.AbstractNode;
 import com.otoil.dbcomparator.client.snapshots.SnapshotsUniqueNameGenerator;
-import com.otoil.dbcomparator.client.snapshots.SnapshotsUniqueNameGeneratorMockImpl;
 import com.otoil.dbcomparator.client.snapshots.SnapshotsUniqueNameGeneratorUUIDImpl;
 import com.otoil.dbcomparator.client.comparison.ComparisonModel;
 import com.otoil.dbcomparator.client.comparison.ComparisonModelRestImpl;
@@ -23,7 +20,7 @@ import com.otoil.dbcomparator.client.snapshots.SnapshotsModelZipRestImpl;
 /**
  * Дефолтная фабрика.
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 public class ClientFactoryDesktopSnapshotsImpl implements ClientFactory
 {

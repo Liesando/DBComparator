@@ -7,6 +7,11 @@ import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
 import com.otoil.dbcomparator.shared.beans.ColumnNode;
 
 
+/**
+ * Парсер столбцов
+ * 
+ * @author Sergey Medelyan
+ */
 public class DBColumnParser extends DBXmlElementParser<ColumnNode>
 {
     public static final String FOR_TYPE = "column";

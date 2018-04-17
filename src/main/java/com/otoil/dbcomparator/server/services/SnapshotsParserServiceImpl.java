@@ -27,6 +27,11 @@ import com.otoil.dbcomparator.shared.beans.containers.TablesContainerNode;
 import com.otoil.dbcomparator.shared.services.SnapshotsParserService;
 
 
+/**
+ * Сервис, осуществляющий парсинг загруженных архивов со слепками
+ * 
+ * @author Sergey Medelyan
+ */
 @Path("snapshot-parser")
 public class SnapshotsParserServiceImpl implements SnapshotsParserService
 {

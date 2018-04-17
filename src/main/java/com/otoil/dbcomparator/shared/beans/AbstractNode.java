@@ -26,7 +26,7 @@ import com.otoil.dbcomparator.shared.beans.containers.TablesContainerNode;
  * базу, таблицу, столбец, вьюху и т. д.). Узел может содержать в себе другие
  * узлы.
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 @JsonSubTypes({@Type(value = DatabaseNode.class, name = "database"),
     @Type(value = TableNode.class, name = "table"),
@@ -44,7 +44,7 @@ public abstract class AbstractNode
      * Состояние узла (изменяется {@link ComparisonModel моделью}, проводящей
      * сравнение слепков)
      * 
-     * @author kakeru
+     * @author Sergey Medelyan
      */
     public enum NodeState
     {

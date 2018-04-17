@@ -17,6 +17,11 @@ import com.otoil.dbcomparator.shared.services.ComparisonBean;
 import com.otoil.dbcomparator.shared.services.ComparisonService;
 
 
+/**
+ * Сервис, осуществляющий сравнение слепков
+ * 
+ * @author Sergey Medelyan
+ */
 @Path("snapshot-comparator")
 public class ComparisonServiceImpl implements ComparisonService
 {

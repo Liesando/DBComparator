@@ -19,7 +19,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 /**
  * Сервлет для загрузки файлов на сервер
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 public class FileUploadServlet extends HttpServlet
 {

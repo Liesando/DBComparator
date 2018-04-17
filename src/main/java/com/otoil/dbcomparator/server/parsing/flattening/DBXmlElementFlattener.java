@@ -10,6 +10,14 @@ import com.otoil.dbcomparator.server.parsing.DBXmlElementParser;
 import com.otoil.dbcomparator.shared.beans.AbstractNode;
 
 
+/**
+ * Парсер, который обрабатывает значение(-я) элемента и определённым образом
+ * кладёт это значение(-я) в родителя. Как именно это делается определяется в
+ * {@link DBXmlElementFlattener#flattener}. Иными словами этот парсер делает
+ * "уплощение" (flatteging) на 1 уровень вложенности:)
+ * 
+ * @author Sergey Medelyan
+ */
 public class DBXmlElementFlattener extends DBXmlElementParser<AbstractNode>
 {
     public final String FOR_TYPE;

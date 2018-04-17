@@ -6,6 +6,11 @@ import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 
 
+/**
+ * Сравниватель корневых узлов баз
+ * 
+ * @author Sergey Medelyan
+ */
 public class DBRootComparator
         extends DBObjectComparator<DatabaseNode, AbstractNode>
 {
@@ -19,8 +24,7 @@ public class DBRootComparator
     protected NodeState compare(DatabaseNode node,
         AbstractNode reflectedContainer)
     {
-        // TODO: нужно ли сравнивать имена баз данных, если они не задаются в
-        // явном виде в xml?
+        // сами по себе корневые узлы сравнивать не нужно
         return NodeState.NON_CHANGED;
     }
 
@@ -28,7 +32,8 @@ public class DBRootComparator
     protected DatabaseNode getSameNodeFromReflectedContainer(DatabaseNode node,
         AbstractNode reflectedContainer)
     {
-        // в руте у нас нет контейнера для узла БД, поэтому далее,
+        // у нас нет контейнера для узла БД (т. к. это корневой узел, у которого
+        // нет родителя), поэтому далее,
         // когда этот метод используется в performComparison() и ему
         // нужно передать родительский контейнер для детей (таблиц, вьюх,
         // триггеров и т. д.) мы делаем вот такую вот заглушку

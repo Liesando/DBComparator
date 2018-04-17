@@ -10,12 +10,13 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteHandler;
 import com.google.gwt.user.client.ui.HasName;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
 
 
 /**
  * Вьюха загрузки слепков из .zip-архивов
- * @author kakeru
- *
+ * 
+ * @author Sergey Medelyan
  */
 public class SnapshotsViewZipImpl implements SnapshotsView
 {
@@ -23,21 +24,26 @@ public class SnapshotsViewZipImpl implements SnapshotsView
     private final FileUpload source = new FileUpload();
     private final FileUpload destination = new FileUpload();
     private final Button compareBtn = new Button();
+    private final DBComparatorMessages messages = GWT
+        .create(DBComparatorMessages.class);
 
     public SnapshotsViewZipImpl()
     {
-        compareBtn.setText("Compare");
+        compareBtn.setText(messages.compare());
         compareBtn.addClickHandler(event -> {
-           form.submit(); 
+            form.submit();
         });
+
         form.setAction(GWT.getModuleBaseURL() + "upload");
         form.setMethod(FormPanel.METHOD_POST);
         form.setEncoding(FormPanel.ENCODING_MULTIPART);
+
         HorizontalPanel panel = new HorizontalPanel();
-        form.add(panel);
+        panel.addStyleName("snapshots");
         panel.add(source);
         panel.add(destination);
         panel.add(compareBtn);
+        form.add(panel);
 
         form.addSubmitHandler(event -> {
             if (!validateSubmit())
@@ -50,15 +56,14 @@ public class SnapshotsViewZipImpl implements SnapshotsView
     private boolean validateSubmit()
     {
         return source.getFilename().length() > 0
-                && destination.getFilename().length() > 0;
+            && destination.getFilename().length() > 0;
     }
-    
+
     @Override
     public Widget asWidget()
     {
         return form;
     }
-
 
     @Override
     public HandlerRegistration addSubmitCompleteHandler(

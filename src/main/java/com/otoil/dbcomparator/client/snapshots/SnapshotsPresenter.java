@@ -7,7 +7,6 @@ import org.fusesource.restygwt.client.MethodCallback;
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.otoil.dbcomparator.client.events.SnapshotsUploadedEvent;
 import com.otoil.dbcomparator.client.main.ClientFactory;
@@ -18,7 +17,7 @@ import com.otoil.dbcomparator.shared.services.ComparisonBean;
 /**
  * Презентер для загрузки слепков
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 public class SnapshotsPresenter extends AbstractActivity
 {

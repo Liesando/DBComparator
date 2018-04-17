@@ -9,7 +9,7 @@ import com.otoil.dbcomparator.shared.services.ComparisonBean;
 /**
  * Модель в MVP, осуществляющая сравнение двух слепков
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 public interface ComparisonModel
 {

@@ -16,7 +16,7 @@ import com.otoil.dbcomparator.shared.beans.AbstractNode;
  * Класс, осуществляющий парсинг .xml-файлов или элементов xml-разметки. П. С.
  * какие-то страшные методы получились :(
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  * @param <T> Тип обрабатываемого объекта (во всех случаях, кроме самого
  *            верхнего уровня это будет {@link Node}; на верхнем уровне -
  *            {@link ZipEntry})

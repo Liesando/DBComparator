@@ -9,14 +9,13 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 import com.otoil.dbcomparator.client.resources.DBComparatorTemplates;
 import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
 import com.otoil.dbcomparator.shared.beans.AbstractNode;
-import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 
 
 /**
  * Контейнер для других узлов (например, columns для столбцов, constraints для
  * ограничений и так далее).
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 public abstract class ContainerNode extends AbstractNode implements Cloneable
 {

@@ -10,7 +10,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
@@ -22,7 +21,7 @@ import com.otoil.dbcomparator.shared.beans.containers.ContainerNode;
  * Класс для парсинга ZipEntry (точнее, InputStream из этой ZipEntry) Де-факто
  * служит прокси для фактических подпарсерсов.
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 public class DBZipEntryParser extends DBObjectParser<InputStream, AbstractNode>
 {
@@ -67,8 +66,9 @@ public class DBZipEntryParser extends DBObjectParser<InputStream, AbstractNode>
     {
         return containers.get(xmlNodeName);
     }
-    
-    public final void registerContainerFor(String xmlNodeName, ContainerNode container)
+
+    public final void registerContainerFor(String xmlNodeName,
+        ContainerNode container)
     {
         containers.put(xmlNodeName, container);
     }

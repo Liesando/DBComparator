@@ -10,8 +10,8 @@ import com.otoil.dbcomparator.shared.beans.AbstractNode;
 /**
  * Класс, осуществляющий парсинг xml-элементов в указанный тип R.
  * 
- * @author kakeru
- * @param <R>
+ * @author Sergey Medelyan
+ * @param <R> тип узла бд
  */
 public abstract class DBXmlElementParser<R extends AbstractNode>
         extends DBObjectParser<Node, R>
@@ -19,10 +19,11 @@ public abstract class DBXmlElementParser<R extends AbstractNode>
     protected static String getXmlNodeName(Node n)
     {
         String nodeName = getXmlAttributeValue(n, "name");
-        return nodeName == "" ? "(not specified)": nodeName;
+        return nodeName == "" ? "(not specified)" : nodeName;
     }
-    
-    protected static boolean getXmlBooleanAttrValue(Node n, String attributeName)
+
+    protected static boolean getXmlBooleanAttrValue(Node n,
+        String attributeName)
     {
         return getXmlAttributeValue(n, attributeName).equalsIgnoreCase("Y");
     }

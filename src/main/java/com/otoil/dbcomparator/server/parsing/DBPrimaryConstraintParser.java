@@ -7,6 +7,11 @@ import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
 import com.otoil.dbcomparator.shared.beans.constraints.PrimaryConstraintNode;
 
 
+/**
+ * Парсер PK-ограничения
+ * 
+ * @author Sergey Medelyan
+ */
 public class DBPrimaryConstraintParser
         extends DBXmlElementParser<PrimaryConstraintNode>
 {

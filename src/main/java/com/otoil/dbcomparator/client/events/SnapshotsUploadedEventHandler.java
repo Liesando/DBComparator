@@ -1,11 +1,13 @@
 package com.otoil.dbcomparator.client.events;
 
+
 import com.google.gwt.event.shared.EventHandler;
+
 
 /**
  * Хендлер для {@link SnapshotsUploadedEvent}
- * @author kakeru
- *
+ * 
+ * @author Sergey Medelyan
  */
 @FunctionalInterface
 public interface SnapshotsUploadedEventHandler extends EventHandler

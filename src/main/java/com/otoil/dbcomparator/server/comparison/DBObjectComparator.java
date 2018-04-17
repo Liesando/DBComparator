@@ -7,15 +7,13 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import com.otoil.dbcomparator.shared.beans.AbstractNode;
-import com.otoil.dbcomparator.shared.beans.ColumnNode;
-import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 
 
 /**
  * Сравниватель объектов слепка {@link AbstractNode}
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  * @param <T> тип принимаемого объекта
  * @param <P> тип родителя, в котором содержится принимаемый объект
  */

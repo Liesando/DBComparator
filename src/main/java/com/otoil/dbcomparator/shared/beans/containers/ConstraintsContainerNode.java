@@ -6,6 +6,11 @@ import com.otoil.dbcomparator.shared.beans.AbstractNode;
 import com.otoil.dbcomparator.shared.beans.constraints.ConstraintNode;
 
 
+/**
+ * Контейнер ограничений
+ * 
+ * @author Sergey Medelyan
+ */
 public class ConstraintsContainerNode extends ContainerNode
 {
     public ConstraintsContainerNode()

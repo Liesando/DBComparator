@@ -7,6 +7,11 @@ import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 import com.otoil.dbcomparator.shared.beans.containers.ColumnsContainerNode;
 
 
+/**
+ * Сравниватель столбцов
+ * 
+ * @author Sergey Medelyan
+ */
 public class DBColumnComparator
         extends DBObjectComparator<ColumnNode, ColumnsContainerNode>
 {

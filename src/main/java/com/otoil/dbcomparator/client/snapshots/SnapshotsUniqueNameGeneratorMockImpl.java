@@ -1,18 +1,16 @@
 package com.otoil.dbcomparator.client.snapshots;
 
-import com.google.gwt.user.client.ui.FileUpload;
-
 
 /**
- * Генератор уникальных имён для загруженных файлов
- * и {@link FileUpload}
- * @author kakeru
- *
+ * Фейковый генератор уникальных имён
+ * 
+ * @author Sergey Medelyan
  */
-public class SnapshotsUniqueNameGeneratorMockImpl implements SnapshotsUniqueNameGenerator
+public class SnapshotsUniqueNameGeneratorMockImpl
+        implements SnapshotsUniqueNameGenerator
 {
     private static int last = 100;
-    
+
     @Override
     public String generateUniqueName()
     {

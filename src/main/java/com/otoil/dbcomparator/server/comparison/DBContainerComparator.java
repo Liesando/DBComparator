@@ -5,6 +5,13 @@ import com.otoil.dbcomparator.shared.beans.AbstractNode;
 import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 
 
+/**
+ * Сраниватель контейнеров (таких как "columns", "constraints" и т. д.)
+ * 
+ * @author Sergey Medelyan
+ * @param <T> тип принимаемого объекта
+ * @param <P> тип родителя, в котором содержится принимаемый объект
+ */
 public class DBContainerComparator<T extends AbstractNode, P extends AbstractNode>
         extends DBObjectComparator<T, P>
 {

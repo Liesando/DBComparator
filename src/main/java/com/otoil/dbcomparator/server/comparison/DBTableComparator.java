@@ -1,12 +1,16 @@
 package com.otoil.dbcomparator.server.comparison;
 
 
-import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 import com.otoil.dbcomparator.shared.beans.TableNode;
 import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
 import com.otoil.dbcomparator.shared.beans.containers.TablesContainerNode;
 
 
+/**
+ * Сравниватель таблиц
+ * 
+ * @author Sergey Medelyan
+ */
 public class DBTableComparator
         extends DBObjectComparator<TableNode, TablesContainerNode>
 {
@@ -16,7 +20,8 @@ public class DBTableComparator
     }
 
     @Override
-    protected NodeState compare(TableNode node, TablesContainerNode reflectedContainer)
+    protected NodeState compare(TableNode node,
+        TablesContainerNode reflectedContainer)
     {
         TableNode sameTable = getSameNodeFromReflectedContainer(node,
             reflectedContainer);
@@ -27,11 +32,11 @@ public class DBTableComparator
         }
 
         return node.getName().equals(sameTable.getName())
-                && node.getOwner().equals(sameTable.getOwner())
-                && node.getTablespace().equals(sameTable.getTablespace())
-                && node.isTemporary() == sameTable.isTemporary()
-                && node.isOfIotType() == sameTable.isOfIotType()
-            ? NodeState.NON_CHANGED
-            : NodeState.CHANGED;
+            && node.getOwner().equals(sameTable.getOwner())
+            && node.getTablespace().equals(sameTable.getTablespace())
+            && node.isTemporary() == sameTable.isTemporary()
+            && node.isOfIotType() == sameTable.isOfIotType()
+                ? NodeState.NON_CHANGED
+                : NodeState.CHANGED;
     }
 }

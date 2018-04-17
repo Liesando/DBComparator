@@ -1,11 +1,13 @@
 package com.otoil.dbcomparator.shared.beans;
 
+
 import com.otoil.dbcomparator.shared.beans.containers.ContainerNode;
 
-/** 
+
+/**
  * Узел-таблица.
- * @author kakeru
- *
+ * 
+ * @author Sergey Medelyan
  */
 public class TableNode extends AbstractNode
 {
@@ -13,12 +15,12 @@ public class TableNode extends AbstractNode
     private String tablespace;
     private boolean isTemporary;
     private boolean isOfIotType;
-    
+
     public TableNode()
     {
         this(null);
     }
-    
+
     public TableNode(String name)
     {
         super(name);

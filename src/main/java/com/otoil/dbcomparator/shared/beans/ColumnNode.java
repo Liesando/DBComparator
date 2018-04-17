@@ -8,7 +8,7 @@ import com.otoil.dbcomparator.client.resources.internationalization.DBComparator
 /**
  * Узел-столбец.
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 public class ColumnNode extends AbstractNode
 {

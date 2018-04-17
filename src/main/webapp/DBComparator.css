@@ -1,4 +1,3 @@
-
 /* TODO: добавить всплывающую подсказку, мол,
 узел изменён, или узел будет удалён при миграции
 к новой версии БД.
@@ -21,4 +20,27 @@
 .db-commentary {
 	color: gray;
 	
+}
+
+.snapshots {
+	padding: 8px 0px 0px 8px;
+    margin-bottom: 80px;
+}
+
+.gwt-RichTextArea {
+	border-width: 1px;
+	box-sizing: border-box;
+}
+
+.padding-top {
+	padding-top: 4px;
+}
+
+.padding-sides {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.padding-bottom {
+	padding-bottom: 4px;
 }

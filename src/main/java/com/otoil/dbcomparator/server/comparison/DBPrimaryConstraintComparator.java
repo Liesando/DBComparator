@@ -6,6 +6,11 @@ import com.otoil.dbcomparator.shared.beans.constraints.PrimaryConstraintNode;
 import com.otoil.dbcomparator.shared.beans.containers.ConstraintsContainerNode;
 
 
+/**
+ * Сравниватель ограничений
+ * 
+ * @author Sergey Medelyan
+ */
 public class DBPrimaryConstraintComparator extends
         DBObjectComparator<PrimaryConstraintNode, ConstraintsContainerNode>
 {

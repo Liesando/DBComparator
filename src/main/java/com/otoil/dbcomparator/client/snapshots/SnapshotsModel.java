@@ -11,7 +11,7 @@ import com.otoil.dbcomparator.shared.beans.DatabaseNode;
  * Модель, осуществляющая выгрузку данных из переданных слепков в
  * {@link AbstractNode}
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 public interface SnapshotsModel
 {

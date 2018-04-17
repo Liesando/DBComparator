@@ -6,13 +6,12 @@ import com.otoil.dbcomparator.shared.beans.AbstractNode;
 import com.otoil.dbcomparator.shared.services.ComparisonBean;
 
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 
 /**
  * Событие успешной загрузки слепков и их парсинга в {@link AbstractNode}
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 @Data
 public class SnapshotsUploadedEvent

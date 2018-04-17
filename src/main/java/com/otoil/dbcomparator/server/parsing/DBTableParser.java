@@ -7,6 +7,11 @@ import com.otoil.dbcomparator.server.exceptions.DBObjectParsingException;
 import com.otoil.dbcomparator.shared.beans.TableNode;
 
 
+/**
+ * Парсер таблиц
+ * 
+ * @author Sergey Medelyan
+ */
 public class DBTableParser extends DBXmlElementParser<TableNode>
 {
     public static final String FOR_TYPE = "table";

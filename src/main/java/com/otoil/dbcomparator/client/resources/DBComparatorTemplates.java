@@ -24,16 +24,16 @@ public interface DBComparatorTemplates extends SafeHtmlTemplates
 
     @Template("<span style=\"color: gray;\"><i>{0}</i></span>")
     SafeHtml summaryNonChanged(String text);
-    
+
     @Template("<span style=\"color: blue;\"><b>{0}</b></span>")
     SafeHtml summaryChanged(String text);
-    
+
     @Template("<span style=\"color: red;\"><b>{0}</b></span>")
     SafeHtml summaryDeleted(String text);
-    
+
     @Template("<span style=\"color: green;\"><b>{0}</b></span>")
     SafeHtml summaryAdded(String text);
-    
+
     @Template("<span class=\"{0}\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>")
     SafeHtml treeItemIcon(String iconClass);
 
@@ -42,5 +42,5 @@ public interface DBComparatorTemplates extends SafeHtmlTemplates
 
     @Template("<span class=\"db-commentary\">&nbsp;&nbsp;<i>- {0}</i></span>")
     SafeHtml treeItemComment(String comment);
-    
+
 }

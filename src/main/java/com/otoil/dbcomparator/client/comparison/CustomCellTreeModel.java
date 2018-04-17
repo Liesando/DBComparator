@@ -21,8 +21,6 @@ import com.otoil.dbcomparator.shared.beans.ColumnNode;
 import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 import com.otoil.dbcomparator.shared.beans.TableNode;
 import com.otoil.dbcomparator.shared.beans.AbstractNode.NodeState;
-import com.otoil.dbcomparator.shared.beans.containers.ColumnsContainerNode;
-import com.otoil.dbcomparator.shared.beans.containers.ConstraintsContainerNode;
 import com.otoil.dbcomparator.shared.beans.containers.ContainerNode;
 import com.otoil.dbcomparator.shared.beans.containers.TablesContainerNode;
 

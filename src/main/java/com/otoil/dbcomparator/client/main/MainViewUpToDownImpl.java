@@ -1,17 +1,22 @@
 package com.otoil.dbcomparator.client.main;
 
+
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.SplitLayoutPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
-import com.otoil.dbcomparator.client.comparison.ComparisonView;
-import com.otoil.dbcomparator.client.snapshots.SnapshotsView;
 
+
+/**
+ * Дефолтная главная вьюха приложухи, располагает все контейнеры сверху вниз
+ * 
+ * @author Sergey Medelyan
+ */
 public class MainViewUpToDownImpl implements MainView
 {
+    private static final int DETAILS_CONTAINER_SIZE = 200;
     private static final String SNAPSHOTS_CONTAINER_HEIGHT = "32px";
-    private static final String COMPARISON_CONTAINER_HEIGHT = "500px";
-    private static final String DETAILS_CONTAINER_HEIGHT = "200px";
     private VerticalPanel verticalPanel = new VerticalPanel();
     private SimplePanel snapshotsContainer = new SimplePanel();
     private SimplePanel comparisonContainer = new SimplePanel();
@@ -19,18 +24,22 @@ public class MainViewUpToDownImpl implements MainView
 
     public MainViewUpToDownImpl()
     {
-        verticalPanel.setWidth("100%");
-        snapshotsContainer.setWidth("100%");
-        comparisonContainer.setWidth("100%");
-        detailsContainer.setWidth("100%");
+        verticalPanel.setSize("100%", "100%");
+        snapshotsContainer.setSize("100%", SNAPSHOTS_CONTAINER_HEIGHT);
+        comparisonContainer.setSize("100%", "100%");
+        detailsContainer.setSize("100%", "100%");
+
+        SplitLayoutPanel splitLayoutPanel = new SplitLayoutPanel(8);
+        splitLayoutPanel.addSouth(detailsContainer, DETAILS_CONTAINER_SIZE);
+        splitLayoutPanel.add(comparisonContainer);
+
         verticalPanel.add(snapshotsContainer);
-        verticalPanel.add(comparisonContainer);
-        verticalPanel.add(detailsContainer);
-        snapshotsContainer.setHeight(SNAPSHOTS_CONTAINER_HEIGHT);
-        comparisonContainer.setHeight(COMPARISON_CONTAINER_HEIGHT);
-        detailsContainer.setHeight(DETAILS_CONTAINER_HEIGHT);
+        verticalPanel.add(splitLayoutPanel);
+
+        verticalPanel.setCellHeight(splitLayoutPanel, "100%");
+        splitLayoutPanel.setSize("100%", "100%");
     }
-    
+
     @Override
     public AcceptsOneWidget snapshotsContainer()
     {

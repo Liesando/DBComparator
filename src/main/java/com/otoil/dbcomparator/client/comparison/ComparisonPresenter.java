@@ -6,7 +6,6 @@ import org.fusesource.restygwt.client.MethodCallback;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -21,7 +20,7 @@ import com.otoil.dbcomparator.shared.services.ComparisonBean;
 /**
  * Презентер для результатов сравнения
  * 
- * @author kakeru
+ * @author Sergey Medelyan
  */
 public class ComparisonPresenter extends AbstractActivity
 {
@@ -54,8 +53,7 @@ public class ComparisonPresenter extends AbstractActivity
                                 ComparisonBean response)
                             {
                                 view.setSourceDBRoot(response.getSource());
-                                view.setDestinationDBRoot(
-                                    response.getDest());
+                                view.setDestinationDBRoot(response.getDest());
                             }
 
                             @Override

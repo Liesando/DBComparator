@@ -9,6 +9,11 @@ import com.otoil.dbcomparator.client.details.DetailsPresenter;
 import com.otoil.dbcomparator.client.snapshots.SnapshotsPresenter;
 
 
+/**
+ * Главный презентер приложухи
+ * 
+ * @author Sergey Medelyan
+ */
 public class MainPresenter extends AbstractActivity
 {
     private MainView mainView;

@@ -2,9 +2,9 @@ package com.otoil.dbcomparator.client.details;
 
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RichTextArea;
 import com.google.gwt.user.client.ui.SplitLayoutPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.otoil.dbcomparator.client.resources.DBComparatorTemplates;
 import com.otoil.dbcomparator.client.resources.internationalization.DBComparatorMessages;
@@ -14,12 +14,25 @@ import com.otoil.dbcomparator.shared.beans.DatabaseNode;
 import com.otoil.dbcomparator.shared.beans.TableNode;
 
 
+/**
+ * Дефолтная вьюха секции информации о выбранном узле
+ * 
+ * @author Sergey Medelyan
+ */
 public class DetailsViewDesktopImpl implements DetailsView
 {
-    private static final String SPLIT_PANEL_HEIGHT = "200px";
     private static final double TEXT_AREA_SIZE = 320.0;
 
-    private SplitLayoutPanel splitPanel = new SplitLayoutPanel();
+    private SplitLayoutPanel splitPanel = new SplitLayoutPanel()
+    {
+
+        @Override
+        protected void onLoad()
+        {
+            super.onLoad();
+            setWidgetSize(sourceTextArea, Window.getClientWidth() / 2);
+        }
+    };
     private RichTextArea sourceTextArea = new RichTextArea();
     private RichTextArea destTextArea = new RichTextArea();
 
@@ -30,17 +43,18 @@ public class DetailsViewDesktopImpl implements DetailsView
 
     public DetailsViewDesktopImpl()
     {
+        // doesn't work
+        // splitPanel.addStyleName("padding-sides");
+        // splitPanel.addStyleName("padding-bottom");
         splitPanel.addWest(sourceTextArea, TEXT_AREA_SIZE);
         splitPanel.add(destTextArea);
-        splitPanel.setWidth("100%");
-        splitPanel.setHeight("100%");
+        splitPanel.setSize("100%", "100%");
 
         sourceTextArea.setEnabled(false);
-        sourceTextArea.setWidth("100%");
-        sourceTextArea.setHeight("100%");
+        sourceTextArea.setSize("100%", "100%");
+
         destTextArea.setEnabled(false);
-        destTextArea.setWidth("100%");
-        destTextArea.setHeight("100%");
+        destTextArea.setSize("100%", "100%");
     }
 
     @Override
